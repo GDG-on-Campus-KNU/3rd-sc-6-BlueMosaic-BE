@@ -4,7 +4,8 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-application.mysql.properties
+application-mysql.properties
+application-oauth2.properties
 
 ### STS ###
 .apt_generated
