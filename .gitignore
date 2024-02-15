@@ -6,6 +6,7 @@ build/
 !**/src/test/**/build/
 application-mysql.properties
 application-oauth2.properties
+application-jwt.properties
 
 ### STS ###
 .apt_generated
