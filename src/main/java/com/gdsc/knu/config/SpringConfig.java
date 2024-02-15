@@ -25,7 +25,6 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Slf4j
 public class SpringConfig {
     private final CustomOAuth2UserService customOAuth2UserService;
-    private final GoogleAuthenticationSuccessHandler googleAuthenticationSuccessHandler;
     private final ConstVariables constVariables;
 
     @Bean
@@ -37,7 +36,9 @@ public class SpringConfig {
                         .anyRequest().authenticated()
                 ).oauth2Login(oauth2Login ->
                         oauth2Login
-                                .successHandler(googleAuthenticationSuccessHandler)
+                                .successHandler((request, response, authentication) -> {
+                                    response.sendRedirect(constVariables.getFRONTEND_URL() + "/signupRedirect");
+                                })
                                 .userInfoEndpoint(userInfo ->
                                         userInfo.userService(customOAuth2UserService)
                                 )
