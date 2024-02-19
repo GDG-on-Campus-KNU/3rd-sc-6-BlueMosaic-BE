@@ -20,6 +20,7 @@ import java.util.Collections;
 @Slf4j
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User>{
     private final UserRepository userRepository;
+
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();

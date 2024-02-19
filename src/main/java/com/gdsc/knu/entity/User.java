@@ -1,6 +1,7 @@
 package com.gdsc.knu.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import lombok.Builder;
@@ -8,6 +9,7 @@ import lombok.Builder;
 @Entity
 @SQLDelete(sql = "UPDATE user SET deleted = true WHERE id = ?")
 @NoArgsConstructor
+@Getter
 public class User extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,6 +47,11 @@ public class User extends BaseTimeEntity{
         this.email = email;
         this.isLogin = isLogin;
         this.region = region;
+    }
+
+    public void updatePartial(String nickname, String name){
+        this.nickname = nickname;
+        this.name = name;
     }
 
     public void restore(){
