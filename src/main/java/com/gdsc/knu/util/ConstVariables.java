@@ -11,8 +11,7 @@ public class ConstVariables {
     private String FRONTEND_URL;
     @Value("${production.backend.url}")
     private String BACKEND_URL;
-    @Value("${jwt.secret}")
-    private String SECRET_KEY;
+
     @Value("${media.file.directory}")
     private String fileDirectory;
 }
