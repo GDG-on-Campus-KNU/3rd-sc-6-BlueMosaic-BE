@@ -13,4 +13,6 @@ public class ConstVariables {
     private String BACKEND_URL;
     @Value("${jwt.secret}")
     private String SECRET_KEY;
+    @Value("${media.file.directory}")
+    private String fileDirectory;
 }
