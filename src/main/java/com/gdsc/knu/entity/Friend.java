@@ -24,9 +24,8 @@ public class Friend {
     public Friend() {
     }
 
-    // 모든 필드를 인자로 받는 생성자
-    public Friend(Integer friendId, Integer userId, Integer friendUserId) {
-        this.friendId = friendId;
+    // userId와 friendUserId를 인자로 받는 생성자
+    public Friend(Integer userId, Integer friendUserId) {
         this.userId = userId;
         this.friendUserId = friendUserId;
     }
@@ -34,10 +33,6 @@ public class Friend {
     // getter, setter 메서드
     public Integer getFriendId() {
         return friendId;
-    }
-
-    public void setFriendId(Integer friendId) {
-        this.friendId = friendId;
     }
 
     public Integer getUserId() {
@@ -58,9 +53,5 @@ public class Friend {
 
     public LocalDateTime getAddedAt() {
         return addedAt;
-    }
-
-    public void setAddedAt(LocalDateTime addedAt) {
-        this.addedAt = addedAt;
     }
 }

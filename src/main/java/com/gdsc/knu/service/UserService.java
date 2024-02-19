@@ -1,8 +1,11 @@
 package com.gdsc.knu.service;
 
+import com.gdsc.knu.entity.User;
 import com.gdsc.knu.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +19,10 @@ public class UserService {
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
     }
 
 }
