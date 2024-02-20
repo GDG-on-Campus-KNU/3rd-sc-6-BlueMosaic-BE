@@ -50,4 +50,11 @@ public class UserService {
         if (users.isEmpty()) throw new NotFoundException("해당 닉네임을 포함하는 사용자가 없습니다. nickname=" + nickname);
         return users.stream().map(GetUserResponseDto::new).collect(Collectors.toList());
     }
+
+    public GetUserResponseDto getMe(Authentication authentication) {
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UnauthorizedException("로그인이 필요합니다."));
+        return new GetUserResponseDto(user);
+    }
 }

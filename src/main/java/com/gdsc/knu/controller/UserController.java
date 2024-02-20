@@ -34,7 +34,7 @@ public class UserController {
                     @ApiResponse(responseCode = "200", description = "유저 정보 조회 성공"),
                     @ApiResponse(responseCode = "404", description = "유저 정보 조회 실패", content = @Content(schema = @Schema(implementation = NotFoundException.class)))
             })
-    public ResponseEntity<GetUserResponseDto> getUser(@PathVariable Long id) {
+    public ResponseEntity<GetUserResponseDto> getUser(@PathVariable("id") Long id) {
         GetUserResponseDto user = userService.getUser(id);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
@@ -57,8 +57,14 @@ public class UserController {
                     @ApiResponse(responseCode = "200", description = "유저 검색 성공"),
                     @ApiResponse(responseCode = "404", description = "유저 검색 실패", content = @Content(schema = @Schema(implementation = NotFoundException.class)))
             })
-    public ResponseEntity<List<GetUserResponseDto>> searchUserWithNickname(@PathVariable String nickname) {
+    public ResponseEntity<List<GetUserResponseDto>> searchUserWithNickname(@PathVariable("nickname") String nickname) {
         List<GetUserResponseDto> user = userService.searchUserWithNickname(nickname);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<GetUserResponseDto> getMe(Authentication authentication) {
+        GetUserResponseDto user = userService.getMe(authentication);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }
