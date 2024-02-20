@@ -4,9 +4,8 @@ import com.gdsc.knu.dto.FriendDTO;
 import com.gdsc.knu.entity.Friend;
 import com.gdsc.knu.entity.User;
 import com.gdsc.knu.exception.ResourceNotFoundException;
+import com.gdsc.knu.repository.FriendRepository;
 import com.gdsc.knu.repository.UserRepository;
-import com.gdsc.knu.service.FriendService;
-import com.gdsc.knu.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FriendController {
 
-    private final FriendService friendService;
+    private final FriendRepository friendRepository;
     private final UserRepository userRepository;
 
     @PostMapping("/friends")
@@ -28,13 +27,13 @@ public class FriendController {
         Friend friend = new Friend();
         friend.setUserId(friendDTO.getUserId());
         friend.setFriendUserId(friendDTO.getFriendUserId());
-        Friend savedFriend = friendService.save(friend);
+        Friend savedFriend = friendRepository.save(friend);
         return new ResponseEntity<>(savedFriend, HttpStatus.CREATED);
     }
 
     @GetMapping("/friends/{userID}")
     public ResponseEntity<List<User>> getFriendList(@PathVariable("userID") Integer userID) {
-        List<Friend> friendList = friendService.findByUserId(userID);
+        List<Friend> friendList = friendRepository.findByUserId(userID);
         List<User> friendUsers = new ArrayList<>();
         for (Friend friend : friendList) {
             User user = userRepository.findById(Long.valueOf(friend.getFriendUserId())).orElseThrow(()-> new ResourceNotFoundException("User Not Found"));
@@ -45,7 +44,7 @@ public class FriendController {
 
     @DeleteMapping("/friends/{friendID}")
     public ResponseEntity<Void> deleteFriend(@PathVariable("friendID") Integer friendID) {
-        friendService.deleteByFriendId(friendID);
+        friendRepository.deleteById(friendID);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
