@@ -32,7 +32,7 @@ public class MediaFileController {
     @Operation(summary = "파일 조회", description = "파일을 조회합니다.", responses = {
             @ApiResponse(responseCode = "200", description = "파일 조회 성공", content = @Content(schema = @Schema(implementation = MediaFile.class)))
     })
-    public ResponseEntity<?> getFile(@PathVariable Long id) {
+    public ResponseEntity<?> getFile(@PathVariable("id") Long id) {
         MediaFile file = mediaFileService.getFile(id);
         return ResponseEntity.ok(file);
     }
@@ -41,7 +41,7 @@ public class MediaFileController {
     @Operation(summary = "파일 삭제", description = "파일을 삭제합니다.", responses = {
             @ApiResponse(responseCode = "200", description = "파일 삭제 성공", content = @Content(schema = @Schema(implementation = String.class)))
     })
-    public ResponseEntity<?> deleteFile(@PathVariable Long id) {
+    public ResponseEntity<?> deleteFile(@PathVariable("id") Long id) {
         mediaFileService.deleteFile(id);
         return ResponseEntity.ok("File deleted successfully");
     }
@@ -50,7 +50,7 @@ public class MediaFileController {
     @Operation(summary = "파일 수정", description = "파일을 수정합니다.", responses = {
             @ApiResponse(responseCode = "200", description = "파일 수정 성공", content = @Content(schema = @Schema(implementation = MediaFile.class)))
     })
-    public ResponseEntity<?> updateFile(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<?> updateFile(@PathVariable("id") Long id, @RequestParam("file") MultipartFile file) {
         MediaFile updatedFile = mediaFileService.updateFile(id, file);
         return ResponseEntity.ok(updatedFile);
     }
