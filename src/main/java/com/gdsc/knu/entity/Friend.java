@@ -54,4 +54,5 @@ public class Friend {
     public LocalDateTime getAddedAt() {
         return addedAt;
     }
+
 }
