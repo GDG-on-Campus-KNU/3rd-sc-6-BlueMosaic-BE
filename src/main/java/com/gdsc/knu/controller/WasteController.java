@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/wastes")
+@RequestMapping("/makeWastesData")
 public class WasteController {
     private final WasteRepository wasteRepository;
 
