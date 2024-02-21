@@ -8,10 +8,10 @@ public class MarineLife {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer marineLifeId;
+    private Long marineLifeId;
 
     @Column(name = "user_id")
-    private Integer userId;
+    private Long userId;
 
     @Column(name = "name", length = 30)
     private String name;
@@ -23,18 +23,18 @@ public class MarineLife {
     private Double longitude;
 
     @Column(name = "first_founder_id")
-    private Integer firstFounderId;
+    private Long firstFounderId;
 
     // 기본 생성자
     public MarineLife() {
     }
 
     // getter
-    public Integer getMarineLifeId() {
+    public Long getMarineLifeId() {
         return marineLifeId;
     }
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
@@ -49,16 +49,16 @@ public class MarineLife {
     public Double getLongitude() {
         return longitude;
     }
-    public Integer getFirstFounderId() {
+    public Long getFirstFounderId() {
         return firstFounderId;
     }
 
     // setter
-    public void setMarineLifeId(Integer marineLifeId) {
+    public void setMarineLifeId(Long marineLifeId) {
         this.marineLifeId = marineLifeId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
@@ -73,7 +73,7 @@ public class MarineLife {
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
-    public void setFirstFounderId(Integer firstFounderID) {
+    public void setFirstFounderId(Long firstFounderID) {
         this.firstFounderId = firstFounderID;
     }
 

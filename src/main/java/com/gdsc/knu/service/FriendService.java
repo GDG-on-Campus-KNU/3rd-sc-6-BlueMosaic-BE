@@ -20,11 +20,11 @@ public class FriendService {
         return friendRepository.save(friend);
     }
 
-    public List<Friend> findByUserId(Integer userId) {
+    public List<Friend> findByUserId(Long userId) {
         return friendRepository.findByUserId(userId);
     }
 
-    public void deleteByFriendId(Integer friendId) {
+    public void deleteByFriendId(Long friendId) {
         friendRepository.deleteById(friendId);
     }
 }

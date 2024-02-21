@@ -47,7 +47,7 @@ public class FriendController {
 
     @GetMapping("/friends/{userID}")
     @Operation(summary = "친구 리스트 가져오기", description = "사용자의 친구 리스트 가져옴")
-    public ResponseEntity<?> getFriendList(@PathVariable("userID") Integer userID) {
+    public ResponseEntity<?> getFriendList(@PathVariable("userID") Long userID) {
         List<Friend> friendList1 = friendRepository.findByUserId(userID);
         List<Friend> friendList2 = friendRepository.findByFriendUserId(userID);
 
@@ -79,7 +79,7 @@ public class FriendController {
 
     @DeleteMapping("/friends/{friendID}")
     @Operation(summary = "친구 삭제", description = "친구 삭제 기능")
-    public ResponseEntity<Void> deleteFriend(@PathVariable("friendID") Integer friendID) {
+    public ResponseEntity<Void> deleteFriend(@PathVariable("friendID") Long friendID) {
         friendRepository.deleteById(friendID);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
