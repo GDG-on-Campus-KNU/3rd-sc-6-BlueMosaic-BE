@@ -11,7 +11,10 @@ public class ConstVariables {
     private String FRONTEND_URL;
     @Value("${production.backend.url}")
     private String BACKEND_URL;
-
     @Value("${media.file.directory}")
     private String fileDirectory;
+    @Value("${google.ai.studio.api.key}")
+    private String API_KEY;
+    @Value("${google.ai.studio.api.url}")
+    private String API_URL;
 }

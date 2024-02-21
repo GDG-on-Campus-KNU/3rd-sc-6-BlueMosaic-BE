@@ -11,11 +11,13 @@ public class GetUserResponseDto {
     private String nickname;
     private String name;
     private String email;
+    private String profileImageUrl;
 
     public GetUserResponseDto(User user){
         this.id = user.getId();
         this.nickname = user.getNickname();
         this.name = user.getName();
         this.email = user.getEmail();
+        this.profileImageUrl = user.getProfileImageUrl();
     }
 }

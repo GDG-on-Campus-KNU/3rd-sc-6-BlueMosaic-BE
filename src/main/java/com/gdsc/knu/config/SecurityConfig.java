@@ -23,7 +23,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 @EnableMethodSecurity
 @Slf4j
-public class SpringConfig {
+public class SecurityConfig {
     private final CustomOAuth2UserService customOAuth2UserService;
     private final ConstVariables constVariables;
 
