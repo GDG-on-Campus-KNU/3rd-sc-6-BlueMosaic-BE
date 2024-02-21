@@ -21,7 +21,7 @@ public class MarineLifeController {
     // 해양 생물 정보 생성
 
     @PostMapping("/create")
-    @Operation(summary = "해양 생물 정보 생성", description = "사용자의 해양 생물 정보를 생성한다")
+    @Operation(summary = "해양 생물 정보 임의 생성", description = "사용자의 해양 생물 정보를 생성한다")
     public ResponseEntity<MarineLife> createMarineLife(@RequestBody MarineLife marineLife) {
         MarineLife savedMarineLife = marineLifeRepository.save(marineLife);
         return new ResponseEntity<>(savedMarineLife, HttpStatus.CREATED);

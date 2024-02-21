@@ -44,9 +44,9 @@ public class AchievementController {
             if (waste.getGeneralWaste() > 0) wasteCount++;
 
             // 쓰레기 종류 업적 설정
-            if (wasteCount >= 1) achievement.setSproutCleaner(true);
-            if (wasteCount >= 3) achievement.setExperiencedCleaner(true);
-            if (wasteCount == 5) achievement.setSkilledCleaner(true);
+            if (wasteCount >= 1) achievement.setSproutCleaner011(true);
+            if (wasteCount >= 3) achievement.setExperiencedCleaner012(true);
+            if (wasteCount == 5) achievement.setSkilledCleaner013(true);
 
             float garbageCollectionDegree = ((float) wasteCount / 5) * 100;
             achievement.setGarbageCollectionDegree(garbageCollectionDegree);
@@ -54,11 +54,11 @@ public class AchievementController {
 
         // 해양 별 도감 업적 설정
         float marineLifeCollectionRate = achievement.getMarineLifeCollectionRate();
-        if (marineLifeCollectionRate >= 1) achievement.setNoviceDiver(true);
-        if (marineLifeCollectionRate >= 30) achievement.setPromisingDiver(true);
-        if (marineLifeCollectionRate >= 50) achievement.setExperiencedDiver(true);
-        if (marineLifeCollectionRate >= 80) achievement.setSkilledDiver(true);
-        if (marineLifeCollectionRate == 100) achievement.setDolphin(true);
+        if (marineLifeCollectionRate >= 1) achievement.setNoviceDiver021(true);
+        if (marineLifeCollectionRate >= 30) achievement.setPromisingDiver022(true);
+        if (marineLifeCollectionRate >= 50) achievement.setExperiencedDiver023(true);
+        if (marineLifeCollectionRate >= 80) achievement.setSkilledDiver024(true);
+        if (marineLifeCollectionRate == 100) achievement.setDolphin025(true);
 
     /*
     // 물고기 종류 업적 설정

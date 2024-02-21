@@ -18,45 +18,44 @@ public class Achievement {
     @Column(nullable = false)
     private Float garbageCollectionDegree;
 
-    // New fields for achievements
     @Column
-    private Boolean sproutCleaner  = false;
+    private Boolean sproutCleaner011  = false;
 
     @Column
-    private Boolean experiencedCleaner = false;
+    private Boolean experiencedCleaner012 = false;
 
     @Column
-    private Boolean skilledCleaner = false;
+    private Boolean skilledCleaner013 = false;
 
     @Column
-    private Boolean noviceDiver = false;
+    private Boolean noviceDiver021 = false;
 
     @Column
-    private Boolean promisingDiver = false;
+    private Boolean promisingDiver022 = false;
 
     @Column
-    private Boolean experiencedDiver = false;
+    private Boolean experiencedDiver023 = false;
 
     @Column
-    private Boolean skilledDiver = false;
+    private Boolean skilledDiver024 = false;
 
     @Column
-    private Boolean dolphin = false;
+    private Boolean dolphin025 = false;
 
     @Column
-    private Boolean novicePhotographer = false;
+    private Boolean novicePhotographer031 = false;
 
     @Column
-    private Boolean experiencedPhotographer = false;
+    private Boolean experiencedPhotographer032 = false;
 
     @Column
-    private Boolean popularPhotographer = false;
+    private Boolean popularPhotographer033 = false;
 
     @Column
-    private Boolean paparazzi = false;
+    private Boolean paparazzi034 = false;
 
     @Column
-    private Boolean pioneer = false;
+    private Boolean pioneer04 = false;
 
     // Getters and Setters
     public Integer getAchievementId() {
@@ -91,108 +90,107 @@ public class Achievement {
         this.garbageCollectionDegree = garbageCollectionDegree;
     }
 
-    public Boolean getSproutCleaner() {
-        return sproutCleaner;
+    public Boolean getSproutCleaner011() {
+        return sproutCleaner011;
     }
 
-    public void setSproutCleaner(Boolean sproutCleaner) {
-        this.sproutCleaner = sproutCleaner;
+    public void setSproutCleaner011(Boolean sproutCleaner011) {
+        this.sproutCleaner011 = sproutCleaner011;
     }
 
-    public Boolean getExperiencedCleaner() {
-        return experiencedCleaner;
+    public Boolean getExperiencedCleaner012() {
+        return experiencedCleaner012;
     }
 
-    public void setExperiencedCleaner(Boolean experiencedCleaner) {
-        this.experiencedCleaner = experiencedCleaner;
+    public void setExperiencedCleaner012(Boolean experiencedCleaner012) {
+        this.experiencedCleaner012 = experiencedCleaner012;
     }
 
-    public Boolean getSkilledCleaner() {
-        return skilledCleaner;
+    public Boolean getSkilledCleaner013() {
+        return skilledCleaner013;
     }
 
-    public void setSkilledCleaner(Boolean skilledCleaner) {
-        this.skilledCleaner = skilledCleaner;
+    public void setSkilledCleaner013(Boolean skilledCleaner013) {
+        this.skilledCleaner013 = skilledCleaner013;
     }
 
-    public Boolean getNoviceDiver() {
-        return noviceDiver;
+    public Boolean getNoviceDiver021() {
+        return noviceDiver021;
     }
 
-    public void setNoviceDiver(Boolean noviceDiver) {
-        this.noviceDiver = noviceDiver;
+    public void setNoviceDiver021(Boolean noviceDiver021) {
+        this.noviceDiver021 = noviceDiver021;
     }
 
-    public Boolean getPromisingDiver() {
-        return promisingDiver;
+    public Boolean getPromisingDiver022() {
+        return promisingDiver022;
     }
 
-    public void setPromisingDiver(Boolean promisingDiver) {
-        this.promisingDiver = promisingDiver;
+    public void setPromisingDiver022(Boolean promisingDiver022) {
+        this.promisingDiver022 = promisingDiver022;
     }
 
-    public Boolean getExperiencedDiver() {
-        return experiencedDiver;
+    public Boolean getExperiencedDiver023() {
+        return experiencedDiver023;
     }
 
-    public void setExperiencedDiver(Boolean experiencedDiver) {
-        this.experiencedDiver = experiencedDiver;
+    public void setExperiencedDiver023(Boolean experiencedDiver023) {
+        this.experiencedDiver023 = experiencedDiver023;
     }
 
-    public Boolean getSkilledDiver() {
-        return skilledDiver;
+    public Boolean getSkilledDiver024() {
+        return skilledDiver024;
     }
 
-    public void setSkilledDiver(Boolean skilledDiver) {
-        this.skilledDiver = skilledDiver;
+    public void setSkilledDiver024(Boolean skilledDiver024) {
+        this.skilledDiver024 = skilledDiver024;
     }
 
-    public Boolean getDolphin() {
-        return dolphin;
+    public Boolean getDolphin025() {
+        return dolphin025;
     }
 
-    public void setDolphin(Boolean dolphin) {
-        this.dolphin = dolphin;
+    public void setDolphin025(Boolean dolphin025) {
+        this.dolphin025 = dolphin025;
     }
 
-    public Boolean getNovicePhotographer() {
-        return novicePhotographer;
+    public Boolean getNovicePhotographer031() {
+        return novicePhotographer031;
     }
 
-    public void setNovicePhotographer(Boolean novicePhotographer) {
-        this.novicePhotographer = novicePhotographer;
+    public void setNovicePhotographer031(Boolean novicePhotographer031) {
+        this.novicePhotographer031 = novicePhotographer031;
     }
 
-    public Boolean getExperiencedPhotographer() {
-        return experiencedPhotographer;
+    public Boolean getExperiencedPhotographer032() {
+        return experiencedPhotographer032;
     }
 
-    public void setExperiencedPhotographer(Boolean experiencedPhotographer) {
-        this.experiencedPhotographer = experiencedPhotographer;
+    public void setExperiencedPhotographer032(Boolean experiencedPhotographer032) {
+        this.experiencedPhotographer032 = experiencedPhotographer032;
     }
 
-    public Boolean getPopularPhotographer() {
-        return popularPhotographer;
+    public Boolean getPopularPhotographer033() {
+        return popularPhotographer033;
     }
 
-    public void setPopularPhotographer(Boolean popularPhotographer) {
-        this.popularPhotographer = popularPhotographer;
+    public void setPopularPhotographer033(Boolean popularPhotographer033) {
+        this.popularPhotographer033 = popularPhotographer033;
     }
 
-    public Boolean getPaparazzi() {
-        return paparazzi;
+    public Boolean getPaparazzi034() {
+        return paparazzi034;
     }
 
-    public void setPaparazzi(Boolean paparazzi) {
-        this.paparazzi = paparazzi;
+    public void setPaparazzi034(Boolean paparazzi034) {
+        this.paparazzi034 = paparazzi034;
     }
 
-    public Boolean getPioneer() {
-        return pioneer;
+    public Boolean getPioneer04() {
+        return pioneer04;
     }
 
-    public void setPioneer(Boolean pioneer) {
-        this.pioneer = pioneer;
+    public void setPioneer04(Boolean pioneer04) {
+        this.pioneer04 = pioneer04;
     }
-
 }
