@@ -21,8 +21,11 @@ public class AchievementController {
         this.wasteRepository = wasteRepository;
     }
 
-    @PostMapping("update/{userID}")
-    public ResponseEntity<Achievement> createOrUpdateAchievement(@PathVariable Long userID) {
+    @PostMapping("update")
+    @Operation(summary = "업적 업데이트", description = "업적 업데이트 기능")
+    public ResponseEntity<Achievement> createOrUpdateAchievement(@RequestBody AchievementRequest request) {
+        Integer userID = request.getUserId();
+
         Optional<Achievement> existingAchievementOptional = achievementRepository.findByUserId(userID);
         Achievement achievement = existingAchievementOptional.orElse(new Achievement());
 
@@ -73,7 +76,7 @@ public class AchievementController {
 
 
     @GetMapping("check/{userID}")
-    public ResponseEntity<Achievement> getAchievementByUserId(@PathVariable Long userID) {
+    public ResponseEntity<Achievement> getAchievementByUserId(@PathVariable Integer userID) {
         Optional<Achievement> achievementOptional = achievementRepository.findByUserId(userID);
         if (!achievementOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

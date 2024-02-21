@@ -1,11 +1,17 @@
 package com.gdsc.knu.controller;
 
 import com.gdsc.knu.dto.FriendDTO;
+import com.gdsc.knu.dto.response.GetRankingResponseDto;
 import com.gdsc.knu.entity.Friend;
 import com.gdsc.knu.entity.User;
+import com.gdsc.knu.exception.NotFoundException;
 import com.gdsc.knu.exception.ResourceNotFoundException;
 import com.gdsc.knu.repository.FriendRepository;
 import com.gdsc.knu.repository.UserRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +30,7 @@ public class FriendController {
     private final UserRepository userRepository;
 
     @PostMapping("/friends")
+    @Operation(summary = "친구 맺기", description = "친구 맺는 기능")
     public ResponseEntity<?> createFriend(@RequestBody FriendDTO friendDTO) {
         Optional<Friend> existingFriend = friendRepository.findByUserIdAndFriendUserId(friendDTO.getUserId(), friendDTO.getFriendUserId());
 
@@ -39,6 +46,7 @@ public class FriendController {
     }
 
     @GetMapping("/friends/{userID}")
+    @Operation(summary = "친구 리스트 가져오기", description = "사용자의 친구 리스트 가져옴")
     public ResponseEntity<?> getFriendList(@PathVariable("userID") Integer userID) {
         List<Friend> friendList1 = friendRepository.findByUserId(userID);
         List<Friend> friendList2 = friendRepository.findByFriendUserId(userID);
@@ -70,6 +78,7 @@ public class FriendController {
 
 
     @DeleteMapping("/friends/{friendID}")
+    @Operation(summary = "친구 삭제", description = "친구 삭제 기능")
     public ResponseEntity<Void> deleteFriend(@PathVariable("friendID") Integer friendID) {
         friendRepository.deleteById(friendID);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
