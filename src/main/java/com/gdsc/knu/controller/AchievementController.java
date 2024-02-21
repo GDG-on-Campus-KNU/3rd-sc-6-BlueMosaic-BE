@@ -45,7 +45,7 @@ public class AchievementController {
             if (wasteCount >= 3) achievement.setExperiencedCleaner(true);
             if (wasteCount == 5) achievement.setSkilledCleaner(true);
 
-            float garbageCollectionDegree = (float) (wasteCount / 5) * 100;
+            float garbageCollectionDegree = ((float) wasteCount / 5) * 100;
             achievement.setGarbageCollectionDegree(garbageCollectionDegree);
         }
 
