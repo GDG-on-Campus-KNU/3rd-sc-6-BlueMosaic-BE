@@ -14,13 +14,15 @@ public class MediaFile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Long userId;
     private String fileName;
     private String fileType;
     private String url; // 파일 저장 위치
 
-    public MediaFile(String fileName, String fileType, String url) {
+    public MediaFile(String fileName, String fileType, String url, Long userId) {
         this.fileName = fileName;
         this.fileType = fileType;
         this.url = url;
+        this.userId = userId;
     }
 }

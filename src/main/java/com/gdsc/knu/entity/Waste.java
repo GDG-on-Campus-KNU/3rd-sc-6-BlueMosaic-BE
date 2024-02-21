@@ -2,6 +2,7 @@ package com.gdsc.knu.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 
 @Entity
 @Table(name = "wastes")
@@ -9,10 +10,10 @@ public class Waste {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
-    private Integer wasteId;
+    private Long wasteId;
 
     @Column(nullable = false)
-    private Integer userId;
+    private Long userId;
 
     @Column(nullable = false)
     private Integer plastic;
@@ -32,21 +33,29 @@ public class Waste {
     //@Column
     //private Boolean upcyclingPossible; // 업사이클링 가능 여부
 
+    public Waste() {
+        this.plastic = 0;
+        this.styrofoam = 0;
+        this.fiber = 0;
+        this.vinyl = 0;
+        this.generalWaste = 0;
+    }
+
     // Getters and Setters
 
-    public Integer getWasteId() {
+    public Long getWasteId() {
         return wasteId;
     }
 
-    public void setWasteId(Integer wasteId) {
+    public void setWasteId(Long wasteId) {
         this.wasteId = wasteId;
     }
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

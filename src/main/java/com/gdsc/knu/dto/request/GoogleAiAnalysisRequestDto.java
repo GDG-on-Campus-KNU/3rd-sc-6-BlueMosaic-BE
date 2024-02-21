@@ -9,12 +9,12 @@ import java.util.List;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class GoogleAiAnalysisRequest {
+public class GoogleAiAnalysisRequestDto {
     private List<Content> contents;
     private GenerationConfig generationConfig;
     private List<SafetySetting> safetySettings;
 
-    public GoogleAiAnalysisRequest(String prompt, String base64Image) {
+    public GoogleAiAnalysisRequestDto(String prompt, String base64Image) {
         this.contents = List.of(new Content(List.of(
                 new Content.Part(prompt)
                 , new Content.Part(new Content.Part.InlineData("image/jpeg", base64Image))

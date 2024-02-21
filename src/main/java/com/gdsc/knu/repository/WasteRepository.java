@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface WasteRepository extends JpaRepository<Waste, Integer> {
-    Optional<Waste> findByUserId(Integer userID);
+public interface WasteRepository extends JpaRepository<Waste, Long> {
+    Optional<Waste> findByUserId(Long userID);
 }

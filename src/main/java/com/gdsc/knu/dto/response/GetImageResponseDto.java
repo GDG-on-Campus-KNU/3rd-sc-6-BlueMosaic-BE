@@ -9,5 +9,5 @@ import lombok.Getter;
 public class GetImageResponseDto {
     private String fileName;
     private String fileType;
-    private String data;
+    private String base64EncodedImage;
 }

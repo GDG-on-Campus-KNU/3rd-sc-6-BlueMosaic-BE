@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,9 +26,8 @@ public class MediaFileController {
     @Operation(summary = "파일 업로드", description = "파일을 업로드합니다.", responses = {
             @ApiResponse(responseCode = "200", description = "파일 업로드 성공", content = @Content(schema = @Schema(implementation = MediaFile.class)))
     })
-    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) throws JsonProcessingException {
-        MediaFile savedFile = mediaFileService.saveFile(file);
-        // TODO : google api 호출 및 return 수정.
+    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, Authentication authentication) {
+        MediaFile savedFile = mediaFileService.saveFile(authentication, file);
         mediaFileService.processImageAndCallExternalAPI(savedFile);
         return ResponseEntity.ok(savedFile);
     }

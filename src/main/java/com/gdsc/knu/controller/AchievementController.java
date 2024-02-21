@@ -22,7 +22,7 @@ public class AchievementController {
     }
 
     @PostMapping("update/{userID}")
-    public ResponseEntity<Achievement> createOrUpdateAchievement(@PathVariable Integer userID) {
+    public ResponseEntity<Achievement> createOrUpdateAchievement(@PathVariable Long userID) {
         Optional<Achievement> existingAchievementOptional = achievementRepository.findByUserId(userID);
         Achievement achievement = existingAchievementOptional.orElse(new Achievement());
 
@@ -73,7 +73,7 @@ public class AchievementController {
 
 
     @GetMapping("check/{userID}")
-    public ResponseEntity<Achievement> getAchievementByUserId(@PathVariable Integer userID) {
+    public ResponseEntity<Achievement> getAchievementByUserId(@PathVariable Long userID) {
         Optional<Achievement> achievementOptional = achievementRepository.findByUserId(userID);
         if (!achievementOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

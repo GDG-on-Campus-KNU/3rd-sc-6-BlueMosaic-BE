@@ -42,4 +42,11 @@ public class RankingService {
         if (rankings.isEmpty()) throw new NotFoundException("랭킹이 없습니다.");
         return rankings.stream().map(GetRankingResponseDto::new).collect(Collectors.toList());
     }
+
+    public void createRanking(Long userId, int score) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("해당 사용자가 없습니다. id=" + userId));
+        Ranking ranking = new Ranking(user, score);
+        rankingRepository.save(ranking);
+    }
 }
