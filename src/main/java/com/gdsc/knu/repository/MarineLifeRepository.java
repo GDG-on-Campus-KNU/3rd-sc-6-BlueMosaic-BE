@@ -4,8 +4,8 @@ import com.gdsc.knu.entity.MarineLife;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
-public interface MarineLifeRepository extends JpaRepository<MarineLife, Integer> {
-    List<MarineLife> findByUserId(Integer userId);
+public interface MarineLifeRepository extends JpaRepository<MarineLife, Long> {
+    List<MarineLife> findByUserId(Long userId);
 }
 
 

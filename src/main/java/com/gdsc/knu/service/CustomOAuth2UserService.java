@@ -29,10 +29,12 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         // OAuth2 제공자로부터 가져온 사용자 정보
         String email = oAuth2User.getAttribute("email");
         String name = oAuth2User.getAttribute("name");
+        String picture = oAuth2User.getAttribute("picture");
+        log.info("[User Access] email: " + email + ", name: " + name + ", picture: " + picture);
 
         // 데이터베이스에서 사용자 조회 또는 사용자가 없는 경우 회원가입 로직
         User user = userRepository.findByEmail(email)
-                .orElseGet(() -> userRepository.save(new User(RandomNickGenerator.generate(), name, email)));
+                .orElseGet(() -> userRepository.save(new User(RandomNickGenerator.generate(), name, email, picture)));
 
         log.info("[User Access] login/register " + user);
 

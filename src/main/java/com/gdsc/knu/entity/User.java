@@ -20,14 +20,16 @@ public class User extends BaseTimeEntity{
     private String email;
     private boolean isLogin;
     private String region;
+    private String profileImageUrl;
     private boolean deleted = Boolean.FALSE;
 
-    public User(String nickname, String name, String email){
+    public User(String nickname, String name, String email, String profileImageUrl){
         this.nickname = nickname;
         this.name = name;
         this.email = email;
         this.isLogin = true;
         this.region = "kr";
+        this.profileImageUrl = profileImageUrl;
     }
 
     @Builder

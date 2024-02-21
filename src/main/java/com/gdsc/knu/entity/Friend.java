@@ -9,13 +9,13 @@ import java.time.LocalDateTime;
 public class Friend {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer friendId;
+    private Long friendId;
 
     @Column(nullable = false)
-    private Integer userId;
+    private Long userId;
 
     @Column(nullable = false)
-    private Integer friendUserId;
+    private Long friendUserId;
 
     @CreatedDate
     private LocalDateTime addedAt;
@@ -25,29 +25,29 @@ public class Friend {
     }
 
     // userId와 friendUserId를 인자로 받는 생성자
-    public Friend(Integer userId, Integer friendUserId) {
+    public Friend(Long userId, Long friendUserId) {
         this.userId = userId;
         this.friendUserId = friendUserId;
     }
 
     // getter, setter 메서드
-    public Integer getFriendId() {
+    public Long getFriendId() {
         return friendId;
     }
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
-    public Integer getFriendUserId() {
+    public Long getFriendUserId() {
         return friendUserId;
     }
 
-    public void setFriendUserId(Integer friendUserId) {
+    public void setFriendUserId(Long friendUserId) {
         this.friendUserId = friendUserId;
     }
 

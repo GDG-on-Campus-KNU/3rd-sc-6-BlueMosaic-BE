@@ -7,10 +7,10 @@ import jakarta.persistence.*;
 public class Achievement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer achievementId;
+    private Long achievementId;
 
     @Column(nullable = false)
-    private Integer userId;
+    private Long userId;
 
     @Column(nullable = false)
     private Float marineLifeCollectionRate = 0.0F;
@@ -58,19 +58,19 @@ public class Achievement {
     private Boolean pioneer04 = false;
 
     // Getters and Setters
-    public Integer getAchievementId() {
+    public Long getAchievementId() {
         return achievementId;
     }
 
-    public void setAchievementId(Integer achievementId) {
+    public void setAchievementId(Long achievementId) {
         this.achievementId = achievementId;
     }
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
