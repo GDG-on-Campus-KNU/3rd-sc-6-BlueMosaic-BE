@@ -4,6 +4,7 @@ import com.gdsc.knu.entity.Achievement;
 import com.gdsc.knu.entity.Waste;
 import com.gdsc.knu.repository.AchievementRepository;
 import com.gdsc.knu.repository.WasteRepository;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ public class AchievementController {
     }
 
     @PostMapping("update/{userID}")
+    @Operation(summary = "업적 업데이트", description = "업적 업데이트 기능")
     public ResponseEntity<Achievement> createOrUpdateAchievement(@PathVariable Integer userID) {
         Optional<Achievement> existingAchievementOptional = achievementRepository.findByUserId(userID);
         Achievement achievement = existingAchievementOptional.orElse(new Achievement());
@@ -73,6 +75,7 @@ public class AchievementController {
 
 
     @GetMapping("check/{userID}")
+    @Operation(summary = "업적 확인", description = "업적 확인")
     public ResponseEntity<Achievement> getAchievementByUserId(@PathVariable Integer userID) {
         Optional<Achievement> achievementOptional = achievementRepository.findByUserId(userID);
         if (!achievementOptional.isPresent()) {

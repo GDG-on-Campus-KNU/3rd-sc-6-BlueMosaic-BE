@@ -2,6 +2,7 @@ package com.gdsc.knu.controller;
 
 import com.gdsc.knu.entity.Waste;
 import com.gdsc.knu.repository.WasteRepository;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ public class WasteController {
     }
 
     @PostMapping
+    @Operation(summary = "임시 쓰레기 데이터 생성 ", description = "업적 확인을 위한 쓰레기 데이터 생성")
     public ResponseEntity<Waste> createWaste(@RequestBody Waste newWaste) {
         Optional<Waste> existingWaste = wasteRepository.findById(newWaste.getUserId());
 
