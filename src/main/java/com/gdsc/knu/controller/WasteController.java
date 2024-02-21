@@ -1,5 +1,6 @@
 package com.gdsc.knu.controller;
 
+import com.gdsc.knu.dto.request.UserFileRequest;
 import com.gdsc.knu.dto.wasteResultDto;
 import com.gdsc.knu.entity.Waste;
 import com.gdsc.knu.repository.WasteRepository;
@@ -22,10 +23,10 @@ public class WasteController {
         this.wasteService = wasteService;
     }
 
-    @GetMapping("identify/{userId}/{fileId}")
+    @PostMapping("identify")
     @Operation(summary = "쓰레기 이미지 종류/점수/총점수", description = "점수 확인")
-    public ResponseEntity<wasteResultDto> getWasteInfo(@PathVariable Long userId, @PathVariable Long fileId) {
-        wasteResultDto result = wasteService.getResults(userId, fileId);
+    public ResponseEntity<wasteResultDto> getWasteInfo(@RequestBody UserFileRequest userFileRequest) {
+        wasteResultDto result = wasteService.getResults(userFileRequest.getUserId(), userFileRequest.getFileId());
         return ResponseEntity.ok(result);
     }
 
