@@ -39,38 +39,32 @@ public class MarineLifeController {
     }
 
     // 해양 생물 정보 수정
-    @PutMapping("/modify/{userID}/{marineLifeID}")
-    @Operation(summary = "사용자가 해양 생물 정보 수정하는 기능", description = "사용자가 모은 해양 생물 정보를 수정한다")
-    public ResponseEntity<?> updateMarineLife(@PathVariable Long userID, @PathVariable Long marineLifeID, @RequestBody MarineLife newMarineLife) {
-        Optional<MarineLife> optionalMarineLife = marineLifeRepository.findById(marineLifeID);
-        if (!optionalMarineLife.isPresent()) {
-            return new ResponseEntity<>("해양 생물 정보를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+    @PutMapping("/marinelife/{marineLifeID}")
+    @Operation(summary = "해양 생물 정보 수정", description = "주어진 ID의 해양 생물 정보를 수정한다")
+    public ResponseEntity<?> updateMarineLife(@PathVariable Long marineLifeID, @RequestBody MarineLife newMarineLife) {
+        Optional<MarineLife> marineLife = marineLifeRepository.findById(marineLifeID);
+        if (!marineLife.isPresent()) {
+            return new ResponseEntity<>("해당 ID의 해양 생물 정보가 없습니다.", HttpStatus.NOT_FOUND);
         }
-        MarineLife marineLife = optionalMarineLife.get();
-        if (!marineLife.getUserId().equals(userID)) {
-            return new ResponseEntity<>("해당 사용자가 모은 해양 생물 정보가 아닙니다.", HttpStatus.FORBIDDEN);
-        }
-        marineLife.setName(newMarineLife.getName());
-        marineLife.setLatitude(newMarineLife.getLatitude());
-        marineLife.setLongitude(newMarineLife.getLongitude());
-        marineLife.setFirstFounderId(newMarineLife.getFirstFounderId());
-        marineLifeRepository.save(marineLife);
-        return new ResponseEntity<>(marineLife, HttpStatus.OK);
+        MarineLife oldMarineLife = marineLife.get();
+        oldMarineLife.setUserId(newMarineLife.getUserId());
+        oldMarineLife.setName(newMarineLife.getName());
+        oldMarineLife.setLatitude(newMarineLife.getLatitude());
+        oldMarineLife.setLongitude(newMarineLife.getLongitude());
+        marineLifeRepository.save(oldMarineLife);
+        return new ResponseEntity<>("해양 생물 정보가 성공적으로 수정되었습니다.", HttpStatus.OK);
     }
 
     // 해양 생물 정보 삭제
-    @DeleteMapping("/delete/{userID}")
-    @Operation(summary = "사용자가 모은 해양 생물 정보 삭제", description = "사용자가 생각하기에 이상한 것이 해양 생물로 들어갔다면, 해양 생물 정보를 삭제한다")
-    public ResponseEntity<?> deleteMarineLife(@PathVariable Long userID, @PathVariable Long marineLifeID) {
-        Optional<MarineLife> optionalMarineLife = marineLifeRepository.findById(marineLifeID);
-        if (!optionalMarineLife.isPresent()) {
-            return new ResponseEntity<>("해양 생물 정보를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+    @DeleteMapping("/delete/{marineLifeID}")
+    @Operation(summary = "해양 생물 정보 삭제", description = "주어진 ID의 해양 생물 정보를 삭제한다")
+    public ResponseEntity<?> deleteMarineLife(@PathVariable Long marineLifeID) {
+        Optional<MarineLife> marineLife = marineLifeRepository.findById(marineLifeID);
+        if (!marineLife.isPresent()) {
+            return new ResponseEntity<>("해당 ID의 해양 생물 정보가 없습니다.", HttpStatus.NOT_FOUND);
         }
-        MarineLife marineLife = optionalMarineLife.get();
-        if (!marineLife.getUserId().equals(userID)) {
-            return new ResponseEntity<>("해당 사용자가 모은 해양 생물 정보가 아닙니다.", HttpStatus.FORBIDDEN);
-        }
-        marineLifeRepository.delete(marineLife);
-        return new ResponseEntity<>("해양 생물 정보가 삭제되었습니다.", HttpStatus.OK);
+        marineLifeRepository.delete(marineLife.get());
+        return new ResponseEntity<>("해양 생물 정보가 성공적으로 삭제되었습니다.", HttpStatus.OK);
     }
+
 }
