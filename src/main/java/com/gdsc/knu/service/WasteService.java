@@ -1,18 +1,41 @@
 package com.gdsc.knu.service;
 
 import com.gdsc.knu.dto.GoogleApiResultDto;
+import com.gdsc.knu.dto.wasteResultDto;
+import com.gdsc.knu.entity.MediaFile;
 import com.gdsc.knu.entity.Waste;
+import com.gdsc.knu.exception.ResourceNotFoundException;
+import com.gdsc.knu.repository.MediaFileRepository;
 import com.gdsc.knu.repository.WasteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 public class WasteService {
     @Autowired
     private WasteRepository wasteRepository;
+    private final MediaFileRepository mediaFileRepository;
+
+    public WasteService(MediaFileRepository mediaFileRepository) {
+        this.wasteRepository = wasteRepository;
+        this.mediaFileRepository = mediaFileRepository;
+    }
+
+    public wasteResultDto getResults(Long userId, Long fileId) {
+        MediaFile file = mediaFileRepository.findById(fileId)
+                .orElseThrow(() -> new ResourceNotFoundException("File not found with id " + fileId));
+
+        if (!file.getUserId().equals(userId)) {
+            throw new IllegalArgumentException("User ID and file owner do not match.");
+        }
+
+        Waste waste = wasteRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + userId));
+
+        int totalWaste = waste.getPlastic() + waste.getStyrofoam() + waste.getFiber() + waste.getVinyl() + waste.getGeneralWaste();
+
+        return new wasteResultDto(file.getFileType(), file.getScore(), totalWaste);
+    }
 
     public int calculateWasteScore(long userId, GoogleApiResultDto googleApiResultDto) {
         try {

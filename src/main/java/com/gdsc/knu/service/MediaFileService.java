@@ -61,11 +61,13 @@ public class MediaFileService {
             Path targetLocation = fileStorageLocation.resolve(fileName);
             Files.copy(file.getInputStream(), targetLocation);
 
+
             MediaFile mediaFile = new MediaFile(
                     fileName,
                     fileExtension,
                     targetLocation.toString(),
-                    userId
+                    userId,
+                    1L
             );
             return mediaFileRepository.save(mediaFile);
         } catch (IOException ex) {

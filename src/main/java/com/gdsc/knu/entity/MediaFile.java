@@ -18,11 +18,12 @@ public class MediaFile {
     private String fileName;
     private String fileType;
     private String url; // 파일 저장 위치
-
-    public MediaFile(String fileName, String fileType, String url, Long userId) {
+    private Long score; // 파일의 점수
+    public MediaFile(String fileName, String fileType, String url, Long userId, Long score) {
         this.fileName = fileName;
         this.fileType = fileType;
         this.url = url;
         this.userId = userId;
+        this.score = score;
     }
 }
