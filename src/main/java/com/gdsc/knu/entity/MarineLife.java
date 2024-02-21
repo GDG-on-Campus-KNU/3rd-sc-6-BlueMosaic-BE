@@ -22,9 +22,10 @@ public class MarineLife {
     @Column(name = "longitude")
     private Double longitude;
 
+    /*
     @Column(name = "first_founder_id")
     private Integer firstFounderId;
-
+    */
     // 기본 생성자
     public MarineLife() {
     }
@@ -49,14 +50,18 @@ public class MarineLife {
     public Double getLongitude() {
         return longitude;
     }
+    /*
     public Integer getFirstFounderId() {
         return firstFounderId;
     }
+     */
 
     // setter
+    /*
     public void setMarineLifeId(Integer marineLifeId) {
         this.marineLifeId = marineLifeId;
     }
+     */
 
     public void setUserId(Integer userId) {
         this.userId = userId;
@@ -73,9 +78,11 @@ public class MarineLife {
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
+    /*
     public void setFirstFounderId(Integer firstFounderID) {
         this.firstFounderId = firstFounderID;
     }
+     */
 
 }
 
