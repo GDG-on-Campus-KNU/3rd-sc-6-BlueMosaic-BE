@@ -1,8 +1,6 @@
 package com.gdsc.knu.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gdsc.knu.dto.response.GetImageResponseDto;
-import com.gdsc.knu.entity.MediaFile;
 import com.gdsc.knu.exception.ResourceNotFoundException;
 import com.gdsc.knu.service.MediaFileService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,17 +22,17 @@ public class MediaFileController {
 
     @PostMapping("/upload")
     @Operation(summary = "파일 업로드", description = "파일을 업로드합니다.", responses = {
-            @ApiResponse(responseCode = "200", description = "파일 업로드 성공", content = @Content(schema = @Schema(implementation = MediaFile.class)))
+            @ApiResponse(responseCode = "200", description = "파일 업로드 성공", content = @Content(schema = @Schema(implementation = GetImageResponseDto.class)))
     })
-    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, Authentication authentication) {
-        MediaFile savedFile = mediaFileService.saveFile(authentication, file);
-        mediaFileService.processImageAndCallExternalAPI(savedFile);
-        return ResponseEntity.ok(savedFile);
+    public ResponseEntity<GetImageResponseDto> uploadFile(@RequestParam("file") MultipartFile file, Authentication authentication) {
+        GetImageResponseDto getImageResponseDto = mediaFileService.saveFile(authentication, file);
+        mediaFileService.processWasteImageAnalysis(getImageResponseDto);
+        return new ResponseEntity<>(getImageResponseDto, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "파일 조회", description = "파일을 조회합니다.", responses = {
-            @ApiResponse(responseCode = "200", description = "파일 조회 성공", content = @Content(schema = @Schema(implementation = MediaFile.class)))
+            @ApiResponse(responseCode = "200", description = "파일 조회 성공", content = @Content(schema = @Schema(implementation = GetImageResponseDto.class)))
     })
     public ResponseEntity<GetImageResponseDto> getFile(@PathVariable("id") Long id) {
         GetImageResponseDto file = mediaFileService.getFile(id);

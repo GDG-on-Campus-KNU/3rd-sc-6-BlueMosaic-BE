@@ -1,20 +1,17 @@
 package com.gdsc.knu.service;
 
-import com.gdsc.knu.dto.GoogleApiResultDto;
+import com.gdsc.knu.dto.WasteApiResultDto;
 import com.gdsc.knu.entity.Waste;
 import com.gdsc.knu.repository.WasteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 public class WasteService {
     @Autowired
     private WasteRepository wasteRepository;
 
-    public int calculateWasteScore(long userId, GoogleApiResultDto googleApiResultDto) {
+    public int calculateWasteScore(long userId, WasteApiResultDto wasteApiResultDto) {
         try {
             Waste waste = wasteRepository.findById(userId).orElseGet(Waste::new);
             if (waste.getUserId() == null) {
@@ -22,11 +19,11 @@ public class WasteService {
             }
 
             // 각 쓰레기 개수 업데이트
-            waste.setPlastic(waste.getPlastic() + googleApiResultDto.getPlastic());
-            waste.setStyrofoam(waste.getStyrofoam() + googleApiResultDto.getStyrofoam());
-            waste.setFiber(waste.getFiber() + googleApiResultDto.getFiber());
-            waste.setVinyl(waste.getVinyl() + googleApiResultDto.getVinyl());
-            waste.setGeneralWaste(waste.getGeneralWaste() + googleApiResultDto.getGeneralWaste());
+            waste.setPlastic(waste.getPlastic() + wasteApiResultDto.getPlastic());
+            waste.setStyrofoam(waste.getStyrofoam() + wasteApiResultDto.getStyrofoam());
+            waste.setFiber(waste.getFiber() + wasteApiResultDto.getFiber());
+            waste.setVinyl(waste.getVinyl() + wasteApiResultDto.getVinyl());
+            waste.setGeneralWaste(waste.getGeneralWaste() + wasteApiResultDto.getGeneralWaste());
 
             // 총 점수 계산 (가정: 각 쓰레기는 1점)
             int totalScore = waste.getPlastic() + waste.getStyrofoam() + waste.getFiber() + waste.getVinyl() + waste.getGeneralWaste();
