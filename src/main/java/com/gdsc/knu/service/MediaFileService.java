@@ -48,7 +48,7 @@ public class MediaFileService {
         Long userId = userRepository.findByEmail(authentication.getName()).orElseThrow(() -> new ResourceNotFoundException("User not found with email " + authentication.getName())).getId();
 
         try {
-            Files.createDirectories(fileStorageLocation);
+            if (!Files.exists(fileStorageLocation)) Files.createDirectories(fileStorageLocation);
 
             fileName = generateUniqueFileName(fileStorageLocation, originalFileName, fileExtension);
 
@@ -61,11 +61,8 @@ public class MediaFileService {
                     targetLocation.toString(),
                     userId
             );
-            GetImageResponseDto getImageResponseDto = new GetImageResponseDto(mediaFile.getId(), mediaFile.getUserId(), mediaFile.getUrl(), mediaFile.getFileName(), mediaFile.getFileType(), Base64.getEncoder().encodeToString(file.getBytes()));
-
-            mediaFileRepository.save(mediaFile);
-
-            return getImageResponseDto;
+            mediaFile = mediaFileRepository.save(mediaFile);
+            return new GetImageResponseDto(mediaFile.getId(), mediaFile.getUserId(), mediaFile.getUrl(), mediaFile.getFileName(), mediaFile.getFileType(), Base64.getEncoder().encodeToString(file.getBytes()));
         } catch (IOException ex) {
             throw new RuntimeException("Could not store file " + fileName + ". Please try again!", ex);
         }
@@ -142,14 +139,7 @@ public class MediaFileService {
 
         String response = googleAiService.sendApiRequest(prompt, getImageResponseDto.getBase64EncodedImage(), apiEndpoint);
 
-        Part part = googleAiService.parseGoogleApiResponse(response);
-        WasteApiResultDto wasteApiResultDto;
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            wasteApiResultDto = objectMapper.readValue(part.text, WasteApiResultDto.class);
-        } catch (Exception e) {
-            throw new ResourceNotFoundException("Failed to parse json in waste image analysis.");
-        }
+        WasteApiResultDto wasteApiResultDto = new WasteApiResultDto(googleAiService.parseGoogleApiResponse(response).text);
         int score = wasteService.calculateWasteScore(getImageResponseDto.getUserId(), wasteApiResultDto);
         rankingService.createRanking(getImageResponseDto.getUserId(), score);
     }
@@ -169,14 +159,8 @@ public class MediaFileService {
 
         String response = googleAiService.sendApiRequest(prompt, getImageResponseDto.getBase64EncodedImage(), apiEndpoint);
 
-        Part part = googleAiService.parseGoogleApiResponse(response);
-        MarineApiResultDto marineApiResultDto;
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            marineApiResultDto = objectMapper.readValue(part.text, MarineApiResultDto.class);
-        } catch (Exception e) {
-            throw new ResourceNotFoundException("Failed to parse json in marine image analysis.");
-        }
+        MarineApiResultDto marineApiResultDto = new MarineApiResultDto(googleAiService.parseGoogleApiResponse(response).text);
+
         // TODO : Implement marine score calculation & other related logic.
     }
 }
