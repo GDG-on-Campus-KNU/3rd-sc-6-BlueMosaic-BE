@@ -1,11 +1,9 @@
 package com.gdsc.knu.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gdsc.knu.dto.GoogleApiResultDto;
-import com.gdsc.knu.dto.request.GoogleAiAnalysisRequestDto;
+import com.gdsc.knu.dto.MarineApiResultDto;
+import com.gdsc.knu.dto.WasteApiResultDto;
 import com.gdsc.knu.dto.response.GetImageResponseDto;
-import com.gdsc.knu.dto.response.ai.GoogleAiAnalysisResponse;
 import com.gdsc.knu.dto.response.ai.Part;
 import com.gdsc.knu.entity.MediaFile;
 import com.gdsc.knu.exception.ResourceNotFoundException;
@@ -15,13 +13,9 @@ import com.gdsc.knu.util.ConstVariables;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.apache.commons.io.FilenameUtils;
 
@@ -40,12 +34,12 @@ public class MediaFileService {
     private final MediaFileRepository mediaFileRepository;
     private final UserRepository userRepository;
     private final ConstVariables constVariables;
-    private final RestTemplate restTemplate;
     private final WasteService wasteService;
     private final RankingService rankingService;
+    private final GoogleAiService googleAiService;
 
     @Transactional
-    public MediaFile saveFile(Authentication authentication, MultipartFile file) {
+    public GetImageResponseDto saveFile(Authentication authentication, MultipartFile file) {
         String originalFileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         String fileName = originalFileName;
         String fileExtension = FilenameUtils.getExtension(originalFileName);
@@ -67,7 +61,11 @@ public class MediaFileService {
                     targetLocation.toString(),
                     userId
             );
-            return mediaFileRepository.save(mediaFile);
+            GetImageResponseDto getImageResponseDto = new GetImageResponseDto(mediaFile.getId(), mediaFile.getUserId(), mediaFile.getUrl(), mediaFile.getFileName(), mediaFile.getFileType(), Base64.getEncoder().encodeToString(file.getBytes()));
+
+            mediaFileRepository.save(mediaFile);
+
+            return getImageResponseDto;
         } catch (IOException ex) {
             throw new RuntimeException("Could not store file " + fileName + ". Please try again!", ex);
         }
@@ -101,7 +99,7 @@ public class MediaFileService {
             byte[] fileContent = Files.readAllBytes(filePath); // 파일 내용을 바이트 배열로 읽음
             String base64Encoded = Base64.getEncoder().encodeToString(fileContent); // 바이트 배열을 Base64로 인코딩
 
-            return new GetImageResponseDto(mediaFile.getUrl(), mediaFile.getFileName(), base64Encoded);
+            return new GetImageResponseDto(mediaFile.getId(), mediaFile.getUserId(), mediaFile.getUrl(), mediaFile.getFileName(), mediaFile.getFileType(), base64Encoded);
         } catch (IOException e) {
             throw new RuntimeException("Could not read file with id " + id, e);
         }
@@ -116,17 +114,16 @@ public class MediaFileService {
         mediaFileRepository.deleteById(id);
     }
 
-    public MediaFile updateFile(Authentication authentication, Long id, MultipartFile file) {
+    public GetImageResponseDto updateFile(Authentication authentication, Long id, MultipartFile file) {
         deleteFile(id);
         return saveFile(authentication, file);
     }
 
-    public void processImageAndCallExternalAPI(MediaFile file) {
-        GetImageResponseDto getImageResponseDto = getFile(file.getId());
+    public void processWasteImageAnalysis(GetImageResponseDto getImageResponseDto) {
         String prompt = """
                 Requirements :\s
                 analyze image and make info with under conditions.
-                
+                                
                 condition 0. result will be json string.
                 condition 1-1. Each trash must have one type. Types : [plastic, styrofoam, fiber, vinyl]
                 condition 1-2. If trash is not in the list, it is generalWaste. So result must have 5 types of trash.
@@ -143,50 +140,43 @@ public class MediaFileService {
                 """;
         String apiEndpoint = constVariables.getAPI_URL() + constVariables.getAPI_KEY();
 
-        String response;
-        try {
-            response = sendApiRequest(prompt, getImageResponseDto.getBase64EncodedImage(), apiEndpoint);
-        } catch (JsonProcessingException e) {
-            throw new ResourceNotFoundException("Failed to call external API");
-        }
+        String response = googleAiService.sendApiRequest(prompt, getImageResponseDto.getBase64EncodedImage(), apiEndpoint);
 
-        GoogleApiResultDto googleApiResultDto = processApiResponse(response);
-        int score = wasteService.calculateWasteScore(file.getUserId(), googleApiResultDto);
-        rankingService.createRanking(file.getUserId(), score);
-    }
-
-    private GoogleApiResultDto processApiResponse(String responseJson) {
+        Part part = googleAiService.parseGoogleApiResponse(response);
+        WasteApiResultDto wasteApiResultDto;
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            GoogleAiAnalysisResponse response = objectMapper.readValue(responseJson, GoogleAiAnalysisResponse.class);
-
-            if (!(!response.candidates.isEmpty() && !response.candidates.get(0).content.parts.isEmpty()))
-                throw new ResourceNotFoundException("No data found in Google AI API response");
-
-            Part part = response.candidates.get(0).content.parts.get(0);
-            System.out.println("Text: " + part.text);
-
-
-            try {
-                return objectMapper.readValue(part.text, GoogleApiResultDto.class);
-            } catch (Exception e) {
-                throw new ResourceNotFoundException("Failed to parse json");
-            }
-
-//            return new GoogleApiResultDto(part.text);
+            wasteApiResultDto = objectMapper.readValue(part.text, WasteApiResultDto.class);
         } catch (Exception e) {
-            throw new ResourceNotFoundException("Invalid Response from Google AI API response" + e.getMessage());
+            throw new ResourceNotFoundException("Failed to parse json in waste image analysis.");
         }
+        int score = wasteService.calculateWasteScore(getImageResponseDto.getUserId(), wasteApiResultDto);
+        rankingService.createRanking(getImageResponseDto.getUserId(), score);
     }
 
-    private String sendApiRequest(String prompt, String base64Image, String apiEndpoint) throws JsonProcessingException {
-        GoogleAiAnalysisRequestDto request = new GoogleAiAnalysisRequestDto(prompt, base64Image); // 요청 객체 생성
+    public void processMarineImageAnalysis(GetImageResponseDto getImageResponseDto) {
+        String prompt = """
+                Requirements : analyze the image and provide "type : number" information.\s
+                condition 1. Each entity must have type of marine animal. if entity not in Type, then mark as others. Type : []
+                condition 2. Each entity must have number of entity. ex) 1, 2, 3...
+                condition 3. words in english.
+                condition 4. don't include human or inanimate.
+                
+                ex)
+                Estuarine Fish : 31, Menhaden : 24, others : 62
+                """;
+        String apiEndpoint = constVariables.getAPI_URL() + constVariables.getAPI_KEY();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+        String response = googleAiService.sendApiRequest(prompt, getImageResponseDto.getBase64EncodedImage(), apiEndpoint);
 
-        HttpEntity<GoogleAiAnalysisRequestDto> entity = new HttpEntity<>(request, headers);
-
-        return restTemplate.postForObject(apiEndpoint, entity, String.class);
+        Part part = googleAiService.parseGoogleApiResponse(response);
+        MarineApiResultDto marineApiResultDto;
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            marineApiResultDto = objectMapper.readValue(part.text, MarineApiResultDto.class);
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Failed to parse json in marine image analysis.");
+        }
+        // TODO : Implement marine score calculation & other related logic.
     }
 }

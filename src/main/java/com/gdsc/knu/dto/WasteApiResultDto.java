@@ -1,15 +1,9 @@
 package com.gdsc.knu.dto;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gdsc.knu.exception.ResourceNotFoundException;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
-
-import java.util.List;
 
 @Getter
-public class GoogleApiResultDto {
+public class WasteApiResultDto {
     private int plastic;
     private int styrofoam;
     private int fiber;
