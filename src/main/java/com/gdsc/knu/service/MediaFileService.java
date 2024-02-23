@@ -144,6 +144,7 @@ public class MediaFileService {
 
         Part part = googleAiService.parseGoogleApiResponse(response);
         WasteApiResultDto wasteApiResultDto;
+        System.out.println("part.text : " + part.text);
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             wasteApiResultDto = objectMapper.readValue(part.text, WasteApiResultDto.class);
