@@ -1,17 +1,11 @@
 package com.gdsc.knu.controller;
 
 import com.gdsc.knu.dto.FriendDTO;
-import com.gdsc.knu.dto.response.GetRankingResponseDto;
 import com.gdsc.knu.entity.Friend;
 import com.gdsc.knu.entity.User;
-import com.gdsc.knu.exception.NotFoundException;
-import com.gdsc.knu.exception.ResourceNotFoundException;
 import com.gdsc.knu.repository.FriendRepository;
 import com.gdsc.knu.repository.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

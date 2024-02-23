@@ -48,7 +48,7 @@ public class MediaFileService {
         Long userId = userRepository.findByEmail(authentication.getName()).orElseThrow(() -> new ResourceNotFoundException("User not found with email " + authentication.getName())).getId();
 
         try {
-            Files.createDirectories(fileStorageLocation);
+            if (!Files.exists(fileStorageLocation)) Files.createDirectories(fileStorageLocation);
 
             fileName = generateUniqueFileName(fileStorageLocation, originalFileName, fileExtension);
 
@@ -61,11 +61,8 @@ public class MediaFileService {
                     targetLocation.toString(),
                     userId
             );
-            GetImageResponseDto getImageResponseDto = new GetImageResponseDto(mediaFile.getId(), mediaFile.getUserId(), mediaFile.getUrl(), mediaFile.getFileName(), mediaFile.getFileType(), Base64.getEncoder().encodeToString(file.getBytes()));
-
-            mediaFileRepository.save(mediaFile);
-
-            return getImageResponseDto;
+            mediaFile = mediaFileRepository.save(mediaFile);
+            return new GetImageResponseDto(mediaFile.getId(), mediaFile.getUserId(), mediaFile.getUrl(), mediaFile.getFileName(), mediaFile.getFileType(), Base64.getEncoder().encodeToString(file.getBytes()));
         } catch (IOException ex) {
             throw new RuntimeException("Could not store file " + fileName + ". Please try again!", ex);
         }
@@ -117,66 +114,5 @@ public class MediaFileService {
     public GetImageResponseDto updateFile(Authentication authentication, Long id, MultipartFile file) {
         deleteFile(id);
         return saveFile(authentication, file);
-    }
-
-    public void processWasteImageAnalysis(GetImageResponseDto getImageResponseDto) {
-        String prompt = """
-                Requirements :\s
-                analyze image and make info with under conditions.
-                                
-                condition 0. result will be json string.
-                condition 1-1. Each trash must have one type. Types : [plastic, styrofoam, fiber, vinyl]
-                condition 1-2. If trash is not in the list, it is generalWaste. So result must have 5 types of trash.
-                condition 2. Each trash must have number of trashes. Number : [Integer]. ex) 0, 1, 2, 3...
-
-                example result)
-                String result = "{
-                    "plastic" : 1,
-                    "styrofoam" : 0,
-                    "fiber" : 6,
-                    "vinyl" : 3,
-                    "generalWaste" : 1
-                }";
-                """;
-        String apiEndpoint = constVariables.getAPI_URL() + constVariables.getAPI_KEY();
-
-        String response = googleAiService.sendApiRequest(prompt, getImageResponseDto.getBase64EncodedImage(), apiEndpoint);
-
-        Part part = googleAiService.parseGoogleApiResponse(response);
-        WasteApiResultDto wasteApiResultDto;
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            wasteApiResultDto = objectMapper.readValue(part.text, WasteApiResultDto.class);
-        } catch (Exception e) {
-            throw new ResourceNotFoundException("Failed to parse json in waste image analysis.");
-        }
-        int score = wasteService.calculateWasteScore(getImageResponseDto.getUserId(), wasteApiResultDto);
-        rankingService.createRanking(getImageResponseDto.getUserId(), score);
-    }
-
-    public void processMarineImageAnalysis(GetImageResponseDto getImageResponseDto) {
-        String prompt = """
-                Requirements : analyze the image and provide "type : number" information.\s
-                condition 1. Each entity must have type of marine animal. if entity not in Type, then mark as others. Type : []
-                condition 2. Each entity must have number of entity. ex) 1, 2, 3...
-                condition 3. words in english.
-                condition 4. don't include human or inanimate.
-                
-                ex)
-                Estuarine Fish : 31, Menhaden : 24, others : 62
-                """;
-        String apiEndpoint = constVariables.getAPI_URL() + constVariables.getAPI_KEY();
-
-        String response = googleAiService.sendApiRequest(prompt, getImageResponseDto.getBase64EncodedImage(), apiEndpoint);
-
-        Part part = googleAiService.parseGoogleApiResponse(response);
-        MarineApiResultDto marineApiResultDto;
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            marineApiResultDto = objectMapper.readValue(part.text, MarineApiResultDto.class);
-        } catch (Exception e) {
-            throw new ResourceNotFoundException("Failed to parse json in marine image analysis.");
-        }
-        // TODO : Implement marine score calculation & other related logic.
     }
 }

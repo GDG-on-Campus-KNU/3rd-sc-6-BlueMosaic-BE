@@ -1,26 +1,37 @@
 package com.gdsc.knu.controller;
 
+import com.gdsc.knu.dto.response.GetImageResponseDto;
 import com.gdsc.knu.entity.MarineLife;
 import com.gdsc.knu.repository.MarineLifeRepository;
+import com.gdsc.knu.service.MarineLifeService;
+import com.gdsc.knu.service.MediaFileService;
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/marinelife")
+@RequiredArgsConstructor
 public class MarineLifeController {
+    private final MarineLifeRepository marineLifeRepository;
+    private final MediaFileService mediaFileService;
+    private final MarineLifeService marineLifeService;
 
-    @Autowired
-    private MarineLifeRepository marineLifeRepository;
+    @PostMapping
+    public ResponseEntity<GetImageResponseDto> uploadFile(@RequestParam("file") MultipartFile file, Authentication authentication) {
+        GetImageResponseDto getImageResponseDto = mediaFileService.saveFile(authentication, file);
+        marineLifeService.processMarineImageAnalysis(getImageResponseDto);
+        return new ResponseEntity<>(getImageResponseDto, HttpStatus.OK);
+    }
 
-    // 해양 생물 정보 생성
-
-    @PostMapping("/create")
+    @PostMapping("/temp-data")
     @Operation(summary = "해양 생물 정보 임의 생성", description = "사용자의 해양 생물 정보를 생성한다")
     public ResponseEntity<MarineLife> createMarineLife(@RequestBody MarineLife marineLife) {
         MarineLife savedMarineLife = marineLifeRepository.save(marineLife);
