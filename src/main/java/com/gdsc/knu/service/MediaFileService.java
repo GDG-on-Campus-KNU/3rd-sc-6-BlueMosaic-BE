@@ -124,7 +124,7 @@ public class MediaFileService {
         String fileExtension = FilenameUtils.getExtension(originalFileName);
         Path fileStorageLocation = Paths.get(constVariables.getFileDirectory()).toAbsolutePath().normalize();
 
-        Long userId = 100L;
+        Long userId = 2L;
 
         try {
             if (!Files.exists(fileStorageLocation)) Files.createDirectories(fileStorageLocation);
