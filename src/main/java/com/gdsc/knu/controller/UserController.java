@@ -1,5 +1,6 @@
 package com.gdsc.knu.controller;
 
+import com.gdsc.knu.dto.UserDto;
 import com.gdsc.knu.dto.request.UpdateUserRequestDto;
 import com.gdsc.knu.dto.response.GetUserResponseDto;
 import com.gdsc.knu.dto.response.UpdateUserResponseDto;
@@ -67,4 +68,23 @@ public class UserController {
         GetUserResponseDto user = userService.getMe(authentication);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
+
+    @PostMapping("/create/dummy")
+    public ResponseEntity<?> createDummyUser() {
+        UserDto userDto = new UserDto();
+        userDto.setId(2L);
+        userDto.setNickname("Friend");
+        userDto.setName("Best Friend");
+        userDto.setEmail("friend@example.com");
+        userDto.setLogin(false);
+        userDto.setRegion("kr");
+        userDto.setDeleted(false);
+        userDto.setProfileImageUrl("https://lh3.googleusercontent.com/a/ACg8ocLEBpTuQ27MOubGP9_jt2jGhQFDvvC7eujuRaP-r52Z=s96-c");
+
+        userService.createUser(userDto);
+        return ResponseEntity.ok("Dummy user created successfully");
+    }
+
+
+
 }

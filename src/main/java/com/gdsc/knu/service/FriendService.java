@@ -41,9 +41,9 @@ public class FriendService {
                 .orElseThrow(() -> new NotFoundException("해당 사용자가 없습니다. id=" + authentication.getName()));
 
         Random random = new Random();
-        long randomFriendId = 100L + random.nextInt(101);
+        long randomFriendId = 0L + random.nextInt(101);
 
-        Friend friend = new Friend(user.getId(), 100L);
+        Friend friend = new Friend(user.getId(), 2L);
         friendRepository.save(friend);
     }
 

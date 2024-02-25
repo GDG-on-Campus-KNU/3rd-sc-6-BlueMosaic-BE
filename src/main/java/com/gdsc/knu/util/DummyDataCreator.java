@@ -18,7 +18,7 @@ public class DummyDataCreator {
     public void createDummyData() {
         entityManager.createNativeQuery(
                         "INSERT INTO user (id, nickname, name, email, is_Login, region, deleted) " +
-                                "VALUES (100, 'Friend', 'Best Friend', 'friend@example.com', false, 'kr', false)")
+                                "VALUES (2, 'Friend', 'Best Friend', 'friend@example.com', false, 'kr', false)")
                 .executeUpdate();
     }
 }

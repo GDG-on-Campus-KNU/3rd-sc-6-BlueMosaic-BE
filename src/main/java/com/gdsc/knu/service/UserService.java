@@ -1,5 +1,6 @@
 package com.gdsc.knu.service;
 
+import com.gdsc.knu.dto.UserDto;
 import com.gdsc.knu.dto.request.UpdateUserRequestDto;
 import com.gdsc.knu.dto.response.GetUserResponseDto;
 import com.gdsc.knu.dto.response.UpdateUserResponseDto;
@@ -8,6 +9,7 @@ import com.gdsc.knu.exception.ForbiddenException;
 import com.gdsc.knu.exception.NotFoundException;
 import com.gdsc.knu.exception.UnauthorizedException;
 import com.gdsc.knu.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -56,5 +58,18 @@ public class UserService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UnauthorizedException("로그인이 필요합니다."));
         return new GetUserResponseDto(user);
+    }
+    @Transactional
+    public User createUser(UserDto userDto) {
+        User user = User.builder()
+                .id(userDto.getId())
+                .nickname(userDto.getNickname())
+                .name(userDto.getName())
+                .email(userDto.getEmail())
+                .isLogin(userDto.isLogin())
+                .region(userDto.getRegion())
+                .deleted(userDto.isDeleted())
+                .build();
+        return userRepository.save(user);
     }
 }
