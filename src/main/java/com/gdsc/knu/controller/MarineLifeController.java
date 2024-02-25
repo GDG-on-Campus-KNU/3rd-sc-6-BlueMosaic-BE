@@ -90,4 +90,14 @@ public class MarineLifeController {
         return new ResponseEntity<>("해양 생물 정보가 성공적으로 삭제되었습니다.", HttpStatus.OK);
     }
 
+    @PostMapping("/friend-dummy-marine")
+    @Operation(summary = "친구 해양 파일 업로드", description = "친구 해양 이미지를 업로드하고 점수를 측정합니다.", responses = {
+            @ApiResponse(responseCode = "200", description = "파일 업로드 성공", content = @Content(schema = @Schema(implementation = GetImageResponseDto.class)))
+    })
+    public ResponseEntity<GetImageResponseDto> uploaddummyFile(@RequestParam("file") MultipartFile file) {
+        GetImageResponseDto getImageResponseDto = mediaFileService.savedummyFile(file);
+        marineLifeService.processMarineImageAnalysis(getImageResponseDto);
+        return new ResponseEntity<>(getImageResponseDto, HttpStatus.OK);
+    }
+
 }
