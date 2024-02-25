@@ -82,7 +82,7 @@ public class UserController {
         userDto.setLogin(false);
         userDto.setRegion("kr");
         userDto.setDeleted(false);
-        userDto.setProfileImageUrl("https://lh3.googleusercontent.com/a/ACg8ocLEBpTuQ27MOubGP9_jt2jGhQFDvvC7eujuRaP-r52Z=s96-c");
+        userDto.setProfileImageUrl("https://mblogthumb-phinf.pstatic.net/MjAyMDExMDFfMyAg/MDAxNjA0MjI5NDA4NDMy.5zGHwAo_UtaQFX8Hd7zrDi1WiV5KrDsPHcRzu3e6b8Eg.IlkR3QN__c3o7Qe9z5_xYyCyr2vcx7L_W1arNFgwAJwg.JPEG.gambasg/%EC%9C%A0%ED%8A%9C%EB%B8%8C_%EA%B8%B0%EB%B3%B8%ED%94%84%EB%A1%9C%ED%95%84_%ED%8C%8C%EC%8A%A4%ED%85%94.jpg?type=w800");
 
         userService.createDummyUser(userDto);
 
@@ -94,7 +94,7 @@ public class UserController {
         userDto2.setLogin(false);
         userDto2.setRegion("kr");
         userDto2.setDeleted(false);
-        userDto2.setProfileImageUrl("https://lh3.googleusercontent.com/a/ACg8ocLEBpTuQ27MOubGP9_jt2jGhQFDvvC7eujuRaP-r52Z=s96-c");
+        userDto2.setProfileImageUrl("https://i.namu.wiki/i/Q0N8jhw_skyBQq8Xyt71IjGjuHOwDz1MsHEV3n1DxdNDXEHcfVj1eTyQXRMDt1gI_CXhCi78Xpi8PB45ept8BQ.webp");
 
         userService.createDummyUser(userDto2);
         return ResponseEntity.ok("Dummy user created successfully");
