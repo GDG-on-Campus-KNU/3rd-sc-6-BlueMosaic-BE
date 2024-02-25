@@ -88,7 +88,7 @@ public class ExchangeController {
         Exchange savedExchange = exchangeRepository.save(exchange);
         return ResponseEntity.ok(savedExchange);
     }
-    
+
     // 특정 교환 정보 조회
     @GetMapping("/{exchangeID}")
     @Operation(summary = "교환 정보 조회", description = "교환 정보 확인 기능")

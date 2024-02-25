@@ -57,7 +57,7 @@ public class RankingService {
         for (int i = 0; i < 10; i++) {
             Ranking ranking = new Ranking(
                     user,
-                    (int) (Math.random() * 1000)
+                    (int) (Math.random() * 100)
             );
             Ranking rnk1 = rankingRepository.save(ranking);
         }
