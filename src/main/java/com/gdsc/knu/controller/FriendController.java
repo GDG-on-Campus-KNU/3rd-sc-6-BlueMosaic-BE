@@ -26,6 +26,10 @@ public class FriendController {
     @PostMapping("/friends")
     @Operation(summary = "친구 맺기", description = "친구 맺는 기능")
     public ResponseEntity<?> createFriend(@RequestBody FriendDTO friendDTO) {
+        if (friendDTO.getUserId().equals(friendDTO.getFriendUserId())) {
+            return new ResponseEntity<>("자신을 친구로 추가할 수 없습니다.", HttpStatus.BAD_REQUEST);
+        }
+
         Optional<Friend> existingFriend = friendRepository.findByUserIdAndFriendUserId(friendDTO.getUserId(), friendDTO.getFriendUserId());
 
         if (existingFriend.isPresent()) {
@@ -38,7 +42,7 @@ public class FriendController {
         Friend savedFriend = friendRepository.save(friend);
         return new ResponseEntity<>(savedFriend, HttpStatus.CREATED);
     }
-
+    
     @GetMapping("/friends/{userID}")
     @Operation(summary = "친구 리스트 가져오기", description = "사용자의 친구 리스트 가져옴")
     public ResponseEntity<?> getFriendList(@PathVariable("userID") Long userID) {
