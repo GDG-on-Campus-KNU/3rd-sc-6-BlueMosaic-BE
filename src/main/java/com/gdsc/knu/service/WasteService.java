@@ -59,7 +59,7 @@ public class WasteService {
 
     public int calculateWasteScore(long userId, WasteApiResultDto wasteApiResultDto) {
         try {
-            Waste waste = wasteRepository.findById(userId).orElseGet(Waste::new);
+            Waste waste = wasteRepository.findByUserId(userId).orElseGet(Waste::new);
             if (waste.getUserId() == null) {
                 waste.setUserId(userId);
             }
