@@ -95,9 +95,8 @@ public class MarineLifeController {
             @ApiResponse(responseCode = "200", description = "파일 업로드 성공", content = @Content(schema = @Schema(implementation = GetImageResponseDto.class)))
     })
     public ResponseEntity<GetImageResponseDto> uploaddummyFile(@RequestParam("file") MultipartFile file) {
-        GetImageResponseDto getImageResponseDto = mediaFileService.savedummyFile(file);
+        GetImageResponseDto getImageResponseDto = mediaFileService.savedummyFile(file, "marinelife");
         marineLifeService.processMarineImageAnalysis(getImageResponseDto);
         return new ResponseEntity<>(getImageResponseDto, HttpStatus.OK);
     }
-
 }

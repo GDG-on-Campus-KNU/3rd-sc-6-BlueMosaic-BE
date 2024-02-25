@@ -118,7 +118,7 @@ public class MediaFileService {
         return saveFile(authentication, file, mediaFile.getType());
     }
 
-    public GetImageResponseDto savedummyFile(MultipartFile file) {
+    public GetImageResponseDto savedummyFile(MultipartFile file, String type) {
         String originalFileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         String fileName = originalFileName;
         String fileExtension = FilenameUtils.getExtension(originalFileName);
@@ -138,7 +138,8 @@ public class MediaFileService {
                     fileName,
                     fileExtension,
                     targetLocation.toString(),
-                    userId
+                    userId,
+                    type
             );
             mediaFile = mediaFileRepository.save(mediaFile);
             return new GetImageResponseDto(mediaFile.getId(), mediaFile.getUserId(), mediaFile.getUrl(), mediaFile.getFileName(), mediaFile.getFileType(), Base64.getEncoder().encodeToString(file.getBytes()));
