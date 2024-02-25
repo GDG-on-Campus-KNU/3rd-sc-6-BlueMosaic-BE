@@ -2,6 +2,7 @@ package com.gdsc.knu.controller;
 
 import com.gdsc.knu.dto.request.ExchangeRequestDto;
 import com.gdsc.knu.entity.Exchange;
+import com.gdsc.knu.entity.MarineLife;
 import com.gdsc.knu.entity.MediaFile;
 import com.gdsc.knu.repository.ExchangeRepository;
 import com.gdsc.knu.repository.MarineLifeRepository;
@@ -48,6 +49,31 @@ public class ExchangeController {
         MediaFile newMediaFile = new MediaFile(originalMediaFile.getFileName(), originalMediaFile.getFileType(), originalMediaFile.getUrl(), exchangeRequestDto.getSenderUserId(), originalMediaFile.getType());
         mediaFileRepository.save(newMediaFile);
 
+        // imageId를 통해 MarineLife 객체를 찾습니다.
+        Optional<MarineLife> marineLifeOptional = marineLifeRepository.findByImageId(exchangeRequestDto.getImageId());
+        if (!marineLifeOptional.isPresent()) {
+            // 해당 imageId에 대한 MarineLife 객체가 없다면 적절한 예외 처리를 해야 합니다.
+            throw new RuntimeException("해당 imageId에 대한 MarineLife 객체가 없습니다.");
+        }
+
+    // 찾아낸 MarineLife 객체의 정보를 바탕으로 새로운 MarineLife 객체를 생성합니다.
+        MarineLife originalMarineLife = marineLifeOptional.get();
+        MarineLife newMarineLife = new MarineLife();
+
+        newMarineLife.setUserId(exchangeRequestDto.getSenderUserId());
+        newMarineLife.setName(originalMarineLife.getName());
+        newMarineLife.setLatitude(originalMarineLife.getLatitude());
+        newMarineLife.setLongitude(originalMarineLife.getLongitude());
+        newMarineLife.setScore(originalMarineLife.getScore());
+        newMarineLife.setClassName(originalMarineLife.getClassName());
+
+    // 새롭게 생성한 MediaFile 객체의 id를 MarineLife 객체의 imageId로 설정합니다.
+        newMarineLife.setImageId(0L);
+
+    // MarineLife 객체를 저장합니다.
+        marineLifeRepository.save(newMarineLife);
+
+
         Exchange exchange = new Exchange();
         exchange.setSenderUserId(exchangeRequestDto.getSenderUserId());
         exchange.setReceiverUserId(exchangeRequestDto.getReceiverUserId());
@@ -62,10 +88,7 @@ public class ExchangeController {
         Exchange savedExchange = exchangeRepository.save(exchange);
         return ResponseEntity.ok(savedExchange);
     }
-
-
-
-
+    
     // 특정 교환 정보 조회
     @GetMapping("/{exchangeID}")
     @Operation(summary = "교환 정보 조회", description = "교환 정보 확인 기능")
