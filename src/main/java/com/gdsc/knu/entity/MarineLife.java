@@ -1,10 +1,16 @@
 package com.gdsc.knu.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "marinelife")
-public class MarineLife {
+@Getter
+@Setter
+@NoArgsConstructor
+public class MarineLife extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,74 +27,14 @@ public class MarineLife {
 
     @Column(name = "longitude")
     private Double longitude;
-/*
-    @Column(name = "first_founder_id")
-    private Long firstFounderId;
-*/
 
-    //score
     @Column(name = "score")
     private int score;
 
-    // 기본 생성자
-    public MarineLife() {
-    }
+    @Column(name = "class_name")
+    private String className;
 
-    // getter
-    public Long getMarineLifeId() {
-        return marineLifeId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-    /*
-    public Long getFirstFounderId() {
-        return firstFounderId;
-    }
-    */
-    public int getScore() {
-        return score;
-    }
-    // setter
-    public void setMarineLifeId(Long marineLifeId) {
-        this.marineLifeId = marineLifeId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
-    /*
-    public void setFirstFounderId(Long firstFounderID) {
-        this.firstFounderId = firstFounderID;
-    }
-     */
-    public void setScore(int score) {
-        this.score = score;
-    }
+    @Column(name = "image_id")
+    private Long imageId;
 }
 

@@ -2,7 +2,9 @@ package com.gdsc.knu.controller;
 
 import com.gdsc.knu.dto.response.GetImageResponseDto;
 import com.gdsc.knu.dto.response.MarinelifeUploadResponseDto;
+import com.gdsc.knu.dto.response.RetrieveMarinelifeResponseDto;
 import com.gdsc.knu.entity.MarineLife;
+import com.gdsc.knu.entity.MediaFile;
 import com.gdsc.knu.repository.MarineLifeRepository;
 import com.gdsc.knu.service.MarineLifeService;
 import com.gdsc.knu.service.MediaFileService;
@@ -17,6 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +37,7 @@ public class MarineLifeController {
                     @ApiResponse(responseCode = "200", description = "해양 생물 정보 업로드 성공", content = @Content(schema = @Schema(implementation = MarinelifeUploadResponseDto.class)))
             })
     public ResponseEntity<MarinelifeUploadResponseDto> uploadFile(@RequestParam("file") MultipartFile file, Authentication authentication) {
-        GetImageResponseDto getImageResponseDto = mediaFileService.saveFile(authentication, file);
+        GetImageResponseDto getImageResponseDto = mediaFileService.saveFile(authentication, file, "marinelife");
         MarinelifeUploadResponseDto marinelifeUploadResponseDto = marineLifeService.processMarineImageAnalysis(getImageResponseDto);
         return new ResponseEntity<>(marinelifeUploadResponseDto, HttpStatus.OK);
     }
@@ -49,12 +52,13 @@ public class MarineLifeController {
     // 사용자가 모은 해양 생물 정보 조회
     @GetMapping("/retrieve/{userID}")
     @Operation(summary = "사용자가 모은 해양 생물 정보 조회", description = "사용자가 모은 해양 생물 정보를 조회한다")
-    public ResponseEntity<?> getMarineLifeByUser(@PathVariable Long userID) {
+    public ResponseEntity<List<RetrieveMarinelifeResponseDto>> getMarineLifeByUser(@PathVariable("userID") Long userID) {
         List<MarineLife> marineLifeList = marineLifeRepository.findByUserId(userID);
-        if (marineLifeList.isEmpty()) {
-            return new ResponseEntity<>("해당 사용자가 모은 해양 생물 정보가 없습니다.", HttpStatus.NOT_FOUND);
+        List<RetrieveMarinelifeResponseDto> retrieveMarinelifeResponseDtoList = new ArrayList<>();
+        for (MarineLife marineLife : marineLifeList) {
+            retrieveMarinelifeResponseDtoList.add(new RetrieveMarinelifeResponseDto(mediaFileService.getFile(marineLife.getImageId()).getBase64EncodedImage(), marineLife.getClassName(), marineLife.getCreatedDate().toString()));
         }
-        return new ResponseEntity<>(marineLifeList, HttpStatus.OK);
+        return new ResponseEntity<>(retrieveMarinelifeResponseDtoList, HttpStatus.OK);
     }
 
     // 해양 생물 정보 수정

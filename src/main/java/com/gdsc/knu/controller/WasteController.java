@@ -32,7 +32,7 @@ public class WasteController {
             @ApiResponse(responseCode = "200", description = "파일 업로드 성공", content = @Content(schema = @Schema(implementation = WasteUploadResponseDto.class)))
     })
     public ResponseEntity<WasteUploadResponseDto> uploadFile(@RequestParam("file") MultipartFile file, Authentication authentication) {
-        GetImageResponseDto getImageResponseDto = mediaFileService.saveFile(authentication, file);
+        GetImageResponseDto getImageResponseDto = mediaFileService.saveFile(authentication, file, "waste");
         WasteUploadResponseDto wasteUploadResponseDto = wasteService.processWasteImageAnalysis(getImageResponseDto);
         return new ResponseEntity<>(wasteUploadResponseDto, HttpStatus.OK);
     }

@@ -18,11 +18,13 @@ public class MediaFile {
     private String fileName;
     private String fileType;
     private String url; // 파일 저장 위치
+    private String type;
 
-    public MediaFile(String fileName, String fileType, String url, Long userId) {
+    public MediaFile(String fileName, String fileType, String url, Long userId, String type) {
         this.fileName = fileName;
         this.fileType = fileType;
         this.url = url;
         this.userId = userId;
+        this.type = type;
     }
 }

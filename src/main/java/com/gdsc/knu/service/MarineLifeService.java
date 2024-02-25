@@ -1,18 +1,18 @@
 package com.gdsc.knu.service;
 
 import com.gdsc.knu.dto.MarineApiResultDto;
-import com.gdsc.knu.dto.WasteApiResultDto;
 import com.gdsc.knu.dto.response.GetImageResponseDto;
 import com.gdsc.knu.dto.response.MarinelifeUploadResponseDto;
 import com.gdsc.knu.entity.MarineLife;
-import com.gdsc.knu.entity.Waste;
 import com.gdsc.knu.repository.MarineLifeRepository;
 import com.gdsc.knu.util.ConstVariables;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MarineLifeService {
     private final MarineLifeRepository marineLifeRepository;
     private final GoogleAiService googleAiService;
@@ -26,7 +26,7 @@ public class MarineLifeService {
                 condition 2. Each entity must have positive number of entity. ex) 1, 2, 3...
                 condition 3. words in english.
                 condition 4. don't include human or inanimate.
-                
+                                
                 ex)
                 String result = "{
                     "Toothed Whales" : 1,
@@ -45,26 +45,20 @@ public class MarineLifeService {
         String response = googleAiService.sendApiRequest(prompt, getImageResponseDto.getBase64EncodedImage(), apiEndpoint);
 
         MarineApiResultDto marineApiResultDto = new MarineApiResultDto(googleAiService.parseGoogleApiResponse(response).text);
-        int total = calculateMarinelifeScore(getImageResponseDto.getUserId(), marineApiResultDto);
+        int total = marineLifeRepository.findByUserId(getImageResponseDto.getUserId()).stream().mapToInt(MarineLife::getScore).sum();
+        registerMarinelifeScore(getImageResponseDto, marineApiResultDto);
         rankingService.createRanking(getImageResponseDto.getUserId(), marineApiResultDto.getScore());
 
         return new MarinelifeUploadResponseDto(marineApiResultDto.getMarineLife(), marineApiResultDto.getScore(), total);
     }
 
-    public int calculateMarinelifeScore(long userId, MarineApiResultDto marineApiResultDto) {
-        try {
-            MarineLife marineLife = marineLifeRepository.findById(userId).orElseGet(MarineLife::new);
-            if (marineLife.getUserId() == null) {
-                marineLife.setUserId(userId);
-            }
+    public void registerMarinelifeScore(GetImageResponseDto getImageResponseDto, MarineApiResultDto marineApiResultDto) {
+        MarineLife marineLife = new MarineLife();
 
-            int totalScore = marineApiResultDto.getScore()+marineApiResultDto.getScore();
-            marineLife.setScore(totalScore);
-            marineLifeRepository.save(marineLife);
-
-            return totalScore;
-        } catch (Exception ex) {
-            throw new RuntimeException("해양 생물 점수 계산 중 오류가 발생, 다시 시도해주세요.", ex);
-        }
+        marineLife.setUserId(getImageResponseDto.getUserId());
+        marineLife.setScore(marineApiResultDto.getScore());
+        marineLife.setClassName(marineApiResultDto.getMarineLife().stream().map(MarinelifeUploadResponseDto.MarinelifeEntity::getName).reduce((a, b) -> a + "," + b).orElse(""));
+        marineLife.setImageId(getImageResponseDto.getMediaFileId());
+        marineLifeRepository.save(marineLife);
     }
 }

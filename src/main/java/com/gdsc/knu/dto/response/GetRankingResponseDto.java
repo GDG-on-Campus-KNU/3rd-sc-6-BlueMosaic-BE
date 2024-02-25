@@ -11,11 +11,13 @@ public class GetRankingResponseDto {
     private Long userId;
     private int score;
     private String userImageUrl;
+    private String userName;
 
     public GetRankingResponseDto(Ranking ranking){
         this.id = ranking.getId();
         this.userId = ranking.getUser().getId();
         this.score = ranking.getScore();
         this.userImageUrl = ranking.getUser().getProfileImageUrl();
+        this.userName = ranking.getUser().getName();
     }
 }
