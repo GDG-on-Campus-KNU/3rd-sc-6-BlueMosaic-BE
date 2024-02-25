@@ -25,6 +25,11 @@ public class MarineLife {
     @Column(name = "first_founder_id")
     private Long firstFounderId;
 */
+
+    //score
+    @Column(name = "score")
+    private int score;
+
     // 기본 생성자
     public MarineLife() {
     }
@@ -54,6 +59,9 @@ public class MarineLife {
         return firstFounderId;
     }
     */
+    public int getScore() {
+        return score;
+    }
     // setter
     public void setMarineLifeId(Long marineLifeId) {
         this.marineLifeId = marineLifeId;
@@ -79,6 +87,8 @@ public class MarineLife {
         this.firstFounderId = firstFounderID;
     }
      */
-
+    public void setScore(int score) {
+        this.score = score;
+    }
 }
 

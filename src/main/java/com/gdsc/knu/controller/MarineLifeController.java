@@ -1,11 +1,15 @@
 package com.gdsc.knu.controller;
 
 import com.gdsc.knu.dto.response.GetImageResponseDto;
+import com.gdsc.knu.dto.response.MarinelifeUploadResponseDto;
 import com.gdsc.knu.entity.MarineLife;
 import com.gdsc.knu.repository.MarineLifeRepository;
 import com.gdsc.knu.service.MarineLifeService;
 import com.gdsc.knu.service.MediaFileService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +29,14 @@ public class MarineLifeController {
     private final MarineLifeService marineLifeService;
 
     @PostMapping
-    public ResponseEntity<GetImageResponseDto> uploadFile(@RequestParam("file") MultipartFile file, Authentication authentication) {
+    @Operation(summary = "해양 생물 정보 업로드", description = "사용자의 해양 생물 정보를 업로드한다",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "해양 생물 정보 업로드 성공", content = @Content(schema = @Schema(implementation = MarinelifeUploadResponseDto.class)))
+            })
+    public ResponseEntity<MarinelifeUploadResponseDto> uploadFile(@RequestParam("file") MultipartFile file, Authentication authentication) {
         GetImageResponseDto getImageResponseDto = mediaFileService.saveFile(authentication, file);
-        marineLifeService.processMarineImageAnalysis(getImageResponseDto);
-        return new ResponseEntity<>(getImageResponseDto, HttpStatus.OK);
+        MarinelifeUploadResponseDto marinelifeUploadResponseDto = marineLifeService.processMarineImageAnalysis(getImageResponseDto);
+        return new ResponseEntity<>(marinelifeUploadResponseDto, HttpStatus.OK);
     }
 
     @PostMapping("/temp-data")
