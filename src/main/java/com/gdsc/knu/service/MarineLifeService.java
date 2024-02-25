@@ -45,8 +45,8 @@ public class MarineLifeService {
         String response = googleAiService.sendApiRequest(prompt, getImageResponseDto.getBase64EncodedImage(), apiEndpoint);
 
         MarineApiResultDto marineApiResultDto = new MarineApiResultDto(googleAiService.parseGoogleApiResponse(response).text);
-        int total = marineLifeRepository.findByUserId(getImageResponseDto.getUserId()).stream().mapToInt(MarineLife::getScore).sum();
         registerMarinelifeScore(getImageResponseDto, marineApiResultDto);
+        int total = marineLifeRepository.findByUserId(getImageResponseDto.getUserId()).stream().mapToInt(MarineLife::getScore).sum();
         rankingService.createRanking(getImageResponseDto.getUserId(), marineApiResultDto.getScore());
 
         return new MarinelifeUploadResponseDto(marineApiResultDto.getMarineLife(), marineApiResultDto.getScore(), total);
