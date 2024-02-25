@@ -10,19 +10,22 @@ public class Exchange {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer exchangeID;
+    private Long exchangeId;  // 변경된 부분
 
     @Column(nullable = false)
-    private Integer senderUserID;
+    private Long senderUserId;  // 변경된 부분
 
     @Column(nullable = false)
-    private Integer receiverUserID;
+    private Long receiverUserId;  // 변경된 부분
 
     @Column(nullable = false)
-    private Integer marineLifeID;
+    private Long marineLifeId;  // 변경된 부분
+
+    @Column(name = "image_id")
+    private Long imageId;
 
     @Column()
-    private Integer exchangeApproval;
+    private Long exchangeApproval;
     // 0 : 거래 신청, 1 : 거래 대기, 2: 거래 완료
 
     @Column(nullable = false)
@@ -32,32 +35,32 @@ public class Exchange {
     public Exchange() {}
 
     // 모든 필드를 파라미터로 받는 생성자
-    public Exchange(Integer senderUserID, Integer receiverUserID, Integer marineLifeID, Integer exchangeApproval, LocalDateTime exchangeRequestDatetime) {
-        this.senderUserID = senderUserID;
-        this.receiverUserID = receiverUserID;
-        this.marineLifeID = marineLifeID;
+    public Exchange(Long senderUserId, Long receiverUserId, Long marineLifeId, Long exchangeApproval, LocalDateTime exchangeRequestDatetime) {
+        this.senderUserId = senderUserId;  // 변경된 부분
+        this.receiverUserId = receiverUserId;  // 변경된 부분
+        this.marineLifeId = marineLifeId;  // 변경된 부분
         this.exchangeApproval = exchangeApproval;
         this.exchangeRequestDatetime = exchangeRequestDatetime;
     }
 
     // getter
-    public Integer getExchangeID() {
-        return exchangeID;
+    public Long getExchangeId() {  // 변경된 부분
+        return exchangeId;
     }
 
-    public Integer getSenderUserID() {
-        return senderUserID;
+    public Long getSenderUserId() {  // 변경된 부분
+        return senderUserId;
     }
 
-    public Integer getReceiverUserID() {
-        return receiverUserID;
+    public Long getReceiverUserId() {  // 변경된 부분
+        return receiverUserId;
     }
 
-    public Integer getMarineLifeID() {
-        return marineLifeID;
+    public Long getMarineLifeId() {  // 변경된 부분
+        return marineLifeId;
     }
 
-    public Integer getExchangeApproval() {
+    public Long getExchangeApproval() {
         return exchangeApproval;
     }
 
@@ -66,23 +69,23 @@ public class Exchange {
     }
 
     // setter 메소드들
-    public void setExchangeID(Integer exchangeID) {
-        this.exchangeID = exchangeID;
+    public void setExchangeId(Long exchangeId) {  // 변경된 부분
+        this.exchangeId = exchangeId;
     }
 
-    public void setSenderUserID(Integer senderUserID) {
-        this.senderUserID = senderUserID;
+    public void setSenderUserId(Long senderUserId) {  // 변경된 부분
+        this.senderUserId = senderUserId;
     }
 
-    public void setReceiverUserID(Integer receiverUserID) {
-        this.receiverUserID = receiverUserID;
+    public void setReceiverUserId(Long receiverUserId) {  // 변경된 부분
+        this.receiverUserId = receiverUserId;
     }
 
-    public void setMarineLifeID(Integer marineLifeID) {
-        this.marineLifeID = marineLifeID;
+    public void setMarineLifeId(Long marineLifeId) {  // 변경된 부분
+        this.marineLifeId = marineLifeId;
     }
 
-    public void setExchangeApproval(Integer exchangeApproval) {
+    public void setExchangeApproval(Long exchangeApproval) {
         this.exchangeApproval = exchangeApproval;
     }
 
@@ -90,4 +93,8 @@ public class Exchange {
         this.exchangeRequestDatetime = exchangeRequestDatetime;
     }
 
+    public void setImageId(Long imageId) {
+        this.imageId = imageId;
+    }
 }
+

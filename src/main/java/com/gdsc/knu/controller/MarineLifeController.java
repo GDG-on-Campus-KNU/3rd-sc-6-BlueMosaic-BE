@@ -56,7 +56,7 @@ public class MarineLifeController {
         List<MarineLife> marineLifeList = marineLifeRepository.findByUserId(userID);
         List<RetrieveMarinelifeResponseDto> retrieveMarinelifeResponseDtoList = new ArrayList<>();
         for (MarineLife marineLife : marineLifeList) {
-            retrieveMarinelifeResponseDtoList.add(new RetrieveMarinelifeResponseDto(mediaFileService.getFile(marineLife.getImageId()).getBase64EncodedImage(), marineLife.getClassName(), marineLife.getCreatedDate().toString()));
+            retrieveMarinelifeResponseDtoList.add(new RetrieveMarinelifeResponseDto(mediaFileService.getFile(marineLife.getImageId()).getBase64EncodedImage(), marineLife.getClassName(), marineLife.getCreatedDate().toString(), marineLife.getImageId()));
         }
         return new ResponseEntity<>(retrieveMarinelifeResponseDtoList, HttpStatus.OK);
     }
