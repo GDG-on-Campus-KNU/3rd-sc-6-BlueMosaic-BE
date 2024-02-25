@@ -1,6 +1,7 @@
 package com.gdsc.knu.controller;
 
 import com.gdsc.knu.dto.response.GetImageResponseDto;
+import com.gdsc.knu.dto.response.WasteUploadResponseDto;
 import com.gdsc.knu.entity.Waste;
 import com.gdsc.knu.repository.WasteRepository;
 import com.gdsc.knu.service.MediaFileService;
@@ -28,12 +29,12 @@ public class WasteController {
 
     @PostMapping
     @Operation(summary = "쓰레기 파일 업로드", description = "쓰레기 이미지를 업로드하고 점수를 측정합니다.", responses = {
-            @ApiResponse(responseCode = "200", description = "파일 업로드 성공", content = @Content(schema = @Schema(implementation = GetImageResponseDto.class)))
+            @ApiResponse(responseCode = "200", description = "파일 업로드 성공", content = @Content(schema = @Schema(implementation = WasteUploadResponseDto.class)))
     })
-    public ResponseEntity<GetImageResponseDto> uploadFile(@RequestParam("file") MultipartFile file, Authentication authentication) {
+    public ResponseEntity<WasteUploadResponseDto> uploadFile(@RequestParam("file") MultipartFile file, Authentication authentication) {
         GetImageResponseDto getImageResponseDto = mediaFileService.saveFile(authentication, file);
-        wasteService.processWasteImageAnalysis(getImageResponseDto);
-        return new ResponseEntity<>(getImageResponseDto, HttpStatus.OK);
+        WasteUploadResponseDto wasteUploadResponseDto = wasteService.processWasteImageAnalysis(getImageResponseDto);
+        return new ResponseEntity<>(wasteUploadResponseDto, HttpStatus.OK);
     }
 
     @PostMapping("/temp-data")

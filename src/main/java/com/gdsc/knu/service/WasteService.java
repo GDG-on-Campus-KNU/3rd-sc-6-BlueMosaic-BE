@@ -2,6 +2,7 @@ package com.gdsc.knu.service;
 
 import com.gdsc.knu.dto.WasteApiResultDto;
 import com.gdsc.knu.dto.response.GetImageResponseDto;
+import com.gdsc.knu.dto.response.WasteUploadResponseDto;
 import com.gdsc.knu.entity.Waste;
 import com.gdsc.knu.repository.WasteRepository;
 import com.gdsc.knu.util.ConstVariables;
@@ -17,7 +18,7 @@ public class WasteService {
     private final ConstVariables constVariables;
     private final RankingService rankingService;
 
-    public void processWasteImageAnalysis(GetImageResponseDto getImageResponseDto) {
+    public WasteUploadResponseDto processWasteImageAnalysis(GetImageResponseDto getImageResponseDto) {
         String prompt = """
                 Requirements :\s
                 analyze image and make info with under conditions.
@@ -43,6 +44,17 @@ public class WasteService {
         WasteApiResultDto wasteApiResultDto = new WasteApiResultDto(googleAiService.parseGoogleApiResponse(response).text);
         int score = calculateWasteScore(getImageResponseDto.getUserId(), wasteApiResultDto);
         rankingService.createRanking(getImageResponseDto.getUserId(), score);
+
+        int curScore = wasteApiResultDto.getPlastic() + wasteApiResultDto.getStyrofoam() + wasteApiResultDto.getFiber() + wasteApiResultDto.getVinyl() + wasteApiResultDto.getGeneralWaste();
+        return new WasteUploadResponseDto(
+                wasteApiResultDto.getPlastic(),
+                wasteApiResultDto.getStyrofoam(),
+                wasteApiResultDto.getFiber(),
+                wasteApiResultDto.getVinyl(),
+                wasteApiResultDto.getGeneralWaste(),
+                curScore,
+                score
+        );
     }
 
     public int calculateWasteScore(long userId, WasteApiResultDto wasteApiResultDto) {
