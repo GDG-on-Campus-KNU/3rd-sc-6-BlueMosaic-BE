@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class WasteService {
-    private WasteRepository wasteRepository;
+    private final WasteRepository wasteRepository;
     private final GoogleAiService googleAiService;
     private final ConstVariables constVariables;
     private final RankingService rankingService;
