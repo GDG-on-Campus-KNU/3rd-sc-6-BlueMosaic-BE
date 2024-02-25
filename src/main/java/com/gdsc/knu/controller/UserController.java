@@ -76,9 +76,9 @@ public class UserController {
     public ResponseEntity<?> createDummyUser() {
         UserDto userDto = new UserDto();
         userDto.setId(2L);
-        userDto.setNickname("Friend");
-        userDto.setName("Best Friend");
-        userDto.setEmail("friend@example.com");
+        userDto.setNickname("Happy");
+        userDto.setName("Happy");
+        userDto.setEmail("Happy@example.com");
         userDto.setLogin(false);
         userDto.setRegion("kr");
         userDto.setDeleted(false);
@@ -86,6 +86,17 @@ public class UserController {
 
         userService.createDummyUser(userDto);
 
+        UserDto userDto2 = new UserDto();
+        userDto2.setId(3L);
+        userDto2.setNickname("Friend");
+        userDto2.setName("Best Friend");
+        userDto2.setEmail("friend@example.com");
+        userDto2.setLogin(false);
+        userDto2.setRegion("kr");
+        userDto2.setDeleted(false);
+        userDto2.setProfileImageUrl("https://lh3.googleusercontent.com/a/ACg8ocLEBpTuQ27MOubGP9_jt2jGhQFDvvC7eujuRaP-r52Z=s96-c");
+
+        userService.createDummyUser(userDto2);
         return ResponseEntity.ok("Dummy user created successfully");
     }
 }

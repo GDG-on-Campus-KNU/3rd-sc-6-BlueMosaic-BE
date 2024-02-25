@@ -40,11 +40,10 @@ public class FriendService {
         User user = userRepository.findByEmail(authentication.getName())
                 .orElseThrow(() -> new NotFoundException("해당 사용자가 없습니다. id=" + authentication.getName()));
 
-        Random random = new Random();
-        long randomFriendId = 0L + random.nextInt(101);
-
-        Friend friend = new Friend(user.getId(), 2L);
-        friendRepository.save(friend);
+        Friend friend1 = new Friend(user.getId(), 2L);
+        Friend friend2 = new Friend(user.getId(), 3L);
+        friendRepository.save(friend1);
+        friendRepository.save(friend2);
     }
 
 }

@@ -59,7 +59,18 @@ public class RankingService {
                     user,
                     (int) (Math.random() * 1000)
             );
-            Ranking rnk = rankingRepository.save(ranking);
+            Ranking rnk1 = rankingRepository.save(ranking);
+        }
+
+        User user2 = userRepository.findById(3L)
+                .orElseThrow(() -> new NotFoundException("해당 사용자가 없습니다. id=" + 2L));
+
+        for (int i = 0; i < 10; i++) {
+            Ranking ranking = new Ranking(
+                    user2,
+                    (int) (Math.random() * 1000)
+            );
+            Ranking rnk2 = rankingRepository.save(ranking);
         }
     }
 }
