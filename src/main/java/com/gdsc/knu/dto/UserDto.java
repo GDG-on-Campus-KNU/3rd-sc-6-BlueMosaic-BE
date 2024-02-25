@@ -69,5 +69,9 @@ public class UserDto {
     public void setProfileImageUrl(String profileImageUrl) {
         this.profileImageUrl = profileImageUrl;
     }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
 }
 

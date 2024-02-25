@@ -81,7 +81,7 @@ public class UserController {
         userDto.setDeleted(false);
         userDto.setProfileImageUrl("https://lh3.googleusercontent.com/a/ACg8ocLEBpTuQ27MOubGP9_jt2jGhQFDvvC7eujuRaP-r52Z=s96-c");
 
-        userService.createUser(userDto);
+        userService.createDummyUser(userDto);
         return ResponseEntity.ok("Dummy user created successfully");
     }
 

@@ -29,7 +29,7 @@ public class UserService {
     }
 
     public GetUserResponseDto getUser(Long id) {
-         User user = userRepository.findById(id)
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("해당 사용자가 없습니다. id=" + id));
         return new GetUserResponseDto(user);
     }
@@ -59,6 +59,7 @@ public class UserService {
                 .orElseThrow(() -> new UnauthorizedException("로그인이 필요합니다."));
         return new GetUserResponseDto(user);
     }
+
     @Transactional
     public User createUser(UserDto userDto) {
         User user = User.builder()
@@ -71,5 +72,23 @@ public class UserService {
                 .deleted(userDto.isDeleted())
                 .build();
         return userRepository.save(user);
+    }
+
+    @Transactional
+    public void createDummyUser(UserDto userDto) {
+        User user = User.builder()
+                .id(userDto.getId())
+                .nickname(userDto.getNickname())
+                .name(userDto.getName())
+                .email(userDto.getEmail())
+                .isLogin(userDto.isLogin())
+                .region(userDto.getRegion())
+                .deleted(userDto.isDeleted())
+                .build();
+
+        user.setProfileImageUrl(userDto.getProfileImageUrl());
+
+        userRepository.save(user);
+
     }
 }
