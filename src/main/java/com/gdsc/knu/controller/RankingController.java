@@ -42,4 +42,13 @@ public class RankingController {
         rankingService.makeTestData(authentication);
         return ResponseEntity.ok("I'm making data!");
     }
+
+    @GetMapping("/friend-ranking-data")
+    @Operation(summary = "친구 테스트 데이터 생성", description = "친구 테스트 데이터 생성", responses = {
+            @ApiResponse(responseCode = "200", description = "테스트 데이터 생성 성공", content = @Content(schema = @Schema(implementation = String.class)))
+    })
+    public ResponseEntity<?> friendRankingData() {
+        rankingService.makeFriendRankingData();
+        return ResponseEntity.ok("I'm making data!");
+    }
 }

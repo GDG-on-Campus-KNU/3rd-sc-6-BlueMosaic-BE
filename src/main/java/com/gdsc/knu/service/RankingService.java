@@ -49,4 +49,17 @@ public class RankingService {
         Ranking ranking = new Ranking(user, score);
         rankingRepository.save(ranking);
     }
+
+    public void makeFriendRankingData() {
+        User user = userRepository.findById(2L)
+                .orElseThrow(() -> new NotFoundException("해당 사용자가 없습니다. id=" + 2L));
+
+        for (int i = 0; i < 10; i++) {
+            Ranking ranking = new Ranking(
+                    user,
+                    (int) (Math.random() * 1000)
+            );
+            Ranking rnk = rankingRepository.save(ranking);
+        }
+    }
 }

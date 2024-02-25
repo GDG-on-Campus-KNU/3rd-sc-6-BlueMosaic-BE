@@ -6,6 +6,7 @@ import com.gdsc.knu.dto.response.GetUserResponseDto;
 import com.gdsc.knu.dto.response.UpdateUserResponseDto;
 import com.gdsc.knu.exception.ForbiddenException;
 import com.gdsc.knu.exception.NotFoundException;
+import com.gdsc.knu.service.RankingService;
 import com.gdsc.knu.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -27,6 +28,8 @@ import java.util.List;
 @Slf4j
 public class UserController {
     private final UserService userService;
+
+    private final RankingService rankingService;
 
 
     @GetMapping("/{id}")
@@ -82,9 +85,7 @@ public class UserController {
         userDto.setProfileImageUrl("https://lh3.googleusercontent.com/a/ACg8ocLEBpTuQ27MOubGP9_jt2jGhQFDvvC7eujuRaP-r52Z=s96-c");
 
         userService.createDummyUser(userDto);
+
         return ResponseEntity.ok("Dummy user created successfully");
     }
-
-
-
 }
