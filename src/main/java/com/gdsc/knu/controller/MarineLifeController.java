@@ -82,7 +82,7 @@ public class MarineLifeController {
     }
 
     @PostMapping("/friend-dummy-marine")
-    @Operation(summary = "친구 쓰레기 파일 업로드", description = "친구 쓰레기 이미지를 업로드하고 점수를 측정합니다.", responses = {
+    @Operation(summary = "친구 해양 파일 업로드", description = "친구 해양 이미지를 업로드하고 점수를 측정합니다.", responses = {
             @ApiResponse(responseCode = "200", description = "파일 업로드 성공", content = @Content(schema = @Schema(implementation = GetImageResponseDto.class)))
     })
     public ResponseEntity<GetImageResponseDto> uploaddummyFile(@RequestParam("file") MultipartFile file) {
