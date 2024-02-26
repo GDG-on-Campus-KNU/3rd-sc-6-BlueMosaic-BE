@@ -12,6 +12,7 @@ public class GetRankingResponseDto {
     private String userImageUrl;
     private String userName;
     private Long total;
+    private String nickname;
 
     public GetRankingResponseDto(UserRankingDto userRankingDto){
         this.userId = userRankingDto.getUserId().getId();

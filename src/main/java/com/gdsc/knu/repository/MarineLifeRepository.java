@@ -8,6 +8,8 @@ import java.util.Optional;
 
 public interface MarineLifeRepository extends JpaRepository<MarineLife, Long> {
     List<MarineLife> findByUserId(Long userId);
+
+    Optional<MarineLife> findByImageId(Long imageId);
 }
 
 

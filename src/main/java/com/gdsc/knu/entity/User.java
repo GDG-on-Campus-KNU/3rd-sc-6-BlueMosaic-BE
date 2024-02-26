@@ -59,4 +59,14 @@ public class User extends BaseTimeEntity{
     public void restore(){
         this.deleted = false;
     }
+
+    // profileImageUrl에 대한 getter
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    // profileImageUrl에 대한 setter
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
 }

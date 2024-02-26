@@ -1,10 +1,12 @@
 package com.gdsc.knu.controller;
 
+import com.gdsc.knu.dto.UserDto;
 import com.gdsc.knu.dto.request.UpdateUserRequestDto;
 import com.gdsc.knu.dto.response.GetUserResponseDto;
 import com.gdsc.knu.dto.response.UpdateUserResponseDto;
 import com.gdsc.knu.exception.ForbiddenException;
 import com.gdsc.knu.exception.NotFoundException;
+import com.gdsc.knu.service.RankingService;
 import com.gdsc.knu.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -26,6 +28,8 @@ import java.util.List;
 @Slf4j
 public class UserController {
     private final UserService userService;
+
+    private final RankingService rankingService;
 
 
     @GetMapping("/{id}")
@@ -66,5 +70,33 @@ public class UserController {
     public ResponseEntity<GetUserResponseDto> getMe(Authentication authentication) {
         GetUserResponseDto user = userService.getMe(authentication);
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @PostMapping("/create/dummy")
+    public ResponseEntity<?> createDummyUser() {
+        UserDto userDto = new UserDto();
+        userDto.setId(2L);
+        userDto.setNickname("Happy");
+        userDto.setName("Happy");
+        userDto.setEmail("Happy@example.com");
+        userDto.setLogin(false);
+        userDto.setRegion("kr");
+        userDto.setDeleted(false);
+        userDto.setProfileImageUrl("https://lh3.googleusercontent.com/a/ACg8ocLEBpTuQ27MOubGP9_jt2jGhQFDvvC7eujuRaP-r52Z=s96-c");
+
+        userService.createDummyUser(userDto);
+
+        UserDto userDto2 = new UserDto();
+        userDto2.setId(3L);
+        userDto2.setNickname("Friend");
+        userDto2.setName("Best Friend");
+        userDto2.setEmail("friend@example.com");
+        userDto2.setLogin(false);
+        userDto2.setRegion("kr");
+        userDto2.setDeleted(false);
+        userDto2.setProfileImageUrl("https://i.namu.wiki/i/Q0N8jhw_skyBQq8Xyt71IjGjuHOwDz1MsHEV3n1DxdNDXEHcfVj1eTyQXRMDt1gI_CXhCi78Xpi8PB45ept8BQ.webp");
+
+        userService.createDummyUser(userDto2);
+        return ResponseEntity.ok("Dummy user created successfully");
     }
 }

@@ -10,4 +10,5 @@ public class RetrieveMarinelifeResponseDto {
     private String base64EncodedImage;
     private String className;
     private String date;
+    private Long imageId;
 }

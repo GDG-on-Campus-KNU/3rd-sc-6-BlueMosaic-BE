@@ -117,4 +117,34 @@ public class MediaFileService {
         mediaFileRepository.deleteById(id);
         return saveFile(authentication, file, mediaFile.getType());
     }
+
+    public GetImageResponseDto savedummyFile(MultipartFile file, String type) {
+        String originalFileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+        String fileName = originalFileName;
+        String fileExtension = FilenameUtils.getExtension(originalFileName);
+        Path fileStorageLocation = Paths.get(constVariables.getFileDirectory()).toAbsolutePath().normalize();
+
+        Long userId = 2L;
+
+        try {
+            if (!Files.exists(fileStorageLocation)) Files.createDirectories(fileStorageLocation);
+
+            fileName = generateUniqueFileName(fileStorageLocation, originalFileName, fileExtension);
+
+            Path targetLocation = fileStorageLocation.resolve(fileName);
+            Files.copy(file.getInputStream(), targetLocation);
+
+            MediaFile mediaFile = new MediaFile(
+                    fileName,
+                    fileExtension,
+                    targetLocation.toString(),
+                    userId,
+                    type
+            );
+            mediaFile = mediaFileRepository.save(mediaFile);
+            return new GetImageResponseDto(mediaFile.getId(), mediaFile.getUserId(), mediaFile.getUrl(), mediaFile.getFileName(), mediaFile.getFileType(), Base64.getEncoder().encodeToString(file.getBytes()));
+        } catch (IOException ex) {
+            throw new RuntimeException("Could not store file " + fileName + ". Please try again!", ex);
+        }
+    }
 }

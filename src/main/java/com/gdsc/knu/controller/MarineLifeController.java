@@ -56,7 +56,7 @@ public class MarineLifeController {
         List<MarineLife> marineLifeList = marineLifeRepository.findByUserId(userID);
         List<RetrieveMarinelifeResponseDto> retrieveMarinelifeResponseDtoList = new ArrayList<>();
         for (MarineLife marineLife : marineLifeList) {
-            retrieveMarinelifeResponseDtoList.add(new RetrieveMarinelifeResponseDto(mediaFileService.getFile(marineLife.getImageId()).getBase64EncodedImage(), marineLife.getClassName(), marineLife.getCreatedDate().toString()));
+            retrieveMarinelifeResponseDtoList.add(new RetrieveMarinelifeResponseDto(mediaFileService.getFile(marineLife.getImageId()).getBase64EncodedImage(), marineLife.getClassName(), marineLife.getCreatedDate().toString(), marineLife.getImageId()));
         }
         return new ResponseEntity<>(retrieveMarinelifeResponseDtoList, HttpStatus.OK);
     }
@@ -90,4 +90,13 @@ public class MarineLifeController {
         return new ResponseEntity<>("해양 생물 정보가 성공적으로 삭제되었습니다.", HttpStatus.OK);
     }
 
+    @PostMapping("/friend-dummy-marine")
+    @Operation(summary = "친구 해양 파일 업로드", description = "친구 해양 이미지를 업로드하고 점수를 측정합니다.", responses = {
+            @ApiResponse(responseCode = "200", description = "파일 업로드 성공", content = @Content(schema = @Schema(implementation = GetImageResponseDto.class)))
+    })
+    public ResponseEntity<GetImageResponseDto> uploaddummyFile(@RequestParam("file") MultipartFile file) {
+        GetImageResponseDto getImageResponseDto = mediaFileService.savedummyFile(file, "marinelife");
+        marineLifeService.processMarineImageAnalysis(getImageResponseDto);
+        return new ResponseEntity<>(getImageResponseDto, HttpStatus.OK);
+    }
 }
