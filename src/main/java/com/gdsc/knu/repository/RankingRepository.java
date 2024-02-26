@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface RankingRepository extends JpaRepository<Ranking, Long> {
-    @Query("SELECT r FROM Ranking r WHERE r.score IN (SELECT MAX(r2.score) FROM Ranking r2 GROUP BY r2.user) ORDER BY r.score DESC")
+    @Query("SELECT r.user, SUM(r.score) AS total_score FROM Ranking r GROUP BY r.user ORDER BY total_score DESC")
     List<Ranking> findTopRankingsWithDistinctUsers(Pageable pageable);
 
 }
