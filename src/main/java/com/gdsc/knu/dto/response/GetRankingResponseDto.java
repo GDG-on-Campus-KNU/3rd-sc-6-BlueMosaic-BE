@@ -11,13 +11,13 @@ public class GetRankingResponseDto {
     private Long userId;
     private String userImageUrl;
     private String userName;
-    private Long total;
+    private Long score;
     private String nickname;
 
     public GetRankingResponseDto(UserRankingDto userRankingDto){
         User user = userRankingDto.getUser();
         this.userId = user.getId();
-        this.total = userRankingDto.getScore();
+        this.score = userRankingDto.getScore();
         this.userImageUrl = user.getProfileImageUrl();
         this.userName = user.getName();
         this.nickname = user.getNickname();
