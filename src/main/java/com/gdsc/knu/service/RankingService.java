@@ -1,5 +1,6 @@
 package com.gdsc.knu.service;
 
+import com.gdsc.knu.dto.UserRankingDto;
 import com.gdsc.knu.dto.response.GetRankingResponseDto;
 import com.gdsc.knu.dto.response.GetUserResponseDto;
 import com.gdsc.knu.entity.Ranking;
@@ -10,7 +11,6 @@ import com.gdsc.knu.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +38,7 @@ public class RankingService {
     }
 
     public List<GetRankingResponseDto> getRankingTOP100() {
-        List<Ranking> rankings = rankingRepository.findTopRankingsWithDistinctUsers(PageRequest.of(0, 100, Sort.by(Sort.Direction.DESC, "score")));
+        List<UserRankingDto> rankings = rankingRepository.findUserRanking(PageRequest.of(0, 100));
         if (rankings.isEmpty()) throw new NotFoundException("랭킹이 없습니다.");
         return rankings.stream().map(GetRankingResponseDto::new).collect(Collectors.toList());
     }
