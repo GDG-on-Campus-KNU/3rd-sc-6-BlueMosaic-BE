@@ -1,7 +1,7 @@
 package com.gdsc.knu.dto.response;
 
 import com.gdsc.knu.dto.UserRankingDto;
-import com.gdsc.knu.entity.Ranking;
+import com.gdsc.knu.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -15,9 +15,11 @@ public class GetRankingResponseDto {
     private String nickname;
 
     public GetRankingResponseDto(UserRankingDto userRankingDto){
-        this.userId = userRankingDto.getUserId().getId();
+        User user = userRankingDto.getUser();
+        this.userId = user.getId();
         this.total = userRankingDto.getScore();
-        this.userImageUrl = userRankingDto.getUserId().getProfileImageUrl();
-        this.userName = userRankingDto.getUserId().getName();
+        this.userImageUrl = user.getProfileImageUrl();
+        this.userName = user.getName();
+        this.nickname = user.getNickname();
     }
 }

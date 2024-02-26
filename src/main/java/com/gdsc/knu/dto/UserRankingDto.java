@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class UserRankingDto {
-    private User userId;
+    private User user;
     private Long score;
 }
